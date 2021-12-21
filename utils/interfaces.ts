@@ -9,6 +9,7 @@ export interface IImage{
 export interface Iprojects {
     id:string;
     name:string;
+    description:string;
     techStack:string[];
     createdDate:Date;
     gitLink:string;
