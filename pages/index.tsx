@@ -1,20 +1,25 @@
 import type { NextPage } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { Iprojects } from '../utils/interfaces'
 
-
-const Home: NextPage = (props:any) => {
-const {todos} = props
- console.log(props)
+interface IProjectsArr {
+  projects: Iprojects[]
+}
+const Home = (props: IProjectsArr) => {
+  
 
   return (
     <>
-      <div className="bg-blue-300 flex justify-center items-center h-screen" >
-        <Link href="/admin/upload">
-          <a className='text-8xl'>hej</a>
-        </Link>
-        <button onClick={()=>getServerSideProps()}>sd</button>
-      </div>
+     <div className="bg-blue-300 flex justify-center items-center h-screen" >
+               
+                <Link href="/projects">
+                    <a className='text-8xl'>Projects</a>
+                </Link>
+               
+            </div>
+ 
     </>
   )
 
@@ -22,14 +27,5 @@ const {todos} = props
 
 }
 
-export async function getServerSideProps() {
-  // get todo data from API
-  const res = await fetch("http://localhost:3000/api/main")
-  const todos = await res.json()
 
-  // return props
-  return {
-    props: { todos},
-  }
-}
 export default Home
