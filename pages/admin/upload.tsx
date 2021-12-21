@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import axios, { AxiosError } from "axios";
+import { Navbar } from '../../components/Navbar';
 interface Iform {
     name: string;
     techStack: string;
@@ -85,10 +86,12 @@ const upload: NextPage = () => {
             console.log(e.target.value)
 
         }
+        console.log(form)
 
     }
     const handleSubmit = async () => {
         console.log(files)
+        console.log(form)
         let formData = new FormData()
         if (files) {
             for (let i = 0; i < files.length; i++) {
@@ -122,7 +125,8 @@ const upload: NextPage = () => {
 
     }
     return (
-        
+        <>
+        <Navbar/>
         <div className="bg-blue-300 flex flex-col justify-center items-center h-screen" >
             {error? (
                 error
@@ -131,7 +135,7 @@ const upload: NextPage = () => {
                 <form className='flex-col flex' encType='multipart/form-data' >
                 {Object.entries(projectInfo).map(([key, value]) => {
                     return(
-                        <input key={key} type={value.date ? "Date": "text"} onChange={(e) => onChange(e)} className='m-1' placeholder={value.displayName} name={value.name} />
+                        <input key={key} type={value.date ? "Date": "text"} onChange={(e) => onChange(e)} className='m-1' placeholder={value.displayName} name={key} />
                     )
                 })}
 
@@ -148,7 +152,7 @@ const upload: NextPage = () => {
 
 
         </div>
-
+        </>
     )
 }
 
