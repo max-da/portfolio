@@ -7,7 +7,7 @@ export interface IImage{
 
 
 export interface Iprojects {
-    id:string;
+    _id:string;
     name:string;
     description:string;
     techStack:string[];

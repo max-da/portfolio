@@ -16,7 +16,7 @@ const Home = (props: IProjectsArr) => {
     <Navbar/>
      <div className="bg-blue-300 flex justify-center items-center h-screen" >
                
-                <Link href="/projects">
+                <Link href="/projects/all">
                     <a className='text-8xl'>Projects</a>
                 </Link>
                
