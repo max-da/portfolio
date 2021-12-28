@@ -10,7 +10,7 @@ export const Navbar = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link href="/projects">
+                    <Link href="/projects/all">
                         <a>Projekt</a>
                     </Link>
                 </li>
