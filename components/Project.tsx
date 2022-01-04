@@ -1,6 +1,6 @@
 import { Iprojects } from "../utils/interfaces";
 import { ImageViewer } from "./ImageViewer";
-import { ArrowDownCircle, GitHub, Link as LinkIcon, ArrowUpCircle} from "react-feather"
+import { ArrowDownCircle, GitHub, Link as LinkIcon, ArrowUpCircle,Edit } from "react-feather"
 import Link from "next/link";
 
 interface Iprops {
@@ -8,6 +8,7 @@ interface Iprops {
     focus: boolean;
 }
 export const Project = (props: Iprops) => {
+    console.log(props)
     let date = new Date(props.project.createdDate)
     let year = date.getFullYear()
     let month = date.getMonth()
@@ -22,7 +23,7 @@ export const Project = (props: Iprops) => {
                         {props.project.name}
 
                     </h3>
-
+                    <Edit/>
                     {props.project.createdDate ? (
                         <span className="m-1">{year + "/" + month + "/" + day}</span>
                     ) : null}
@@ -46,11 +47,11 @@ export const Project = (props: Iprops) => {
                                 <Link href={props.project.liveLink}>
                                     <LinkIcon />
                                 </Link>
-                            ):null}
+                            ) : null}
 
                         </div>
                         <div className='flex justify-end'>
-                            <Link href={`/projects/all`}>
+                            <Link scroll={false} href={`/projects/all`}>
                                 <ArrowUpCircle className="m-1" />
                             </Link>
 
@@ -58,7 +59,7 @@ export const Project = (props: Iprops) => {
                     </>
                 ) : (
                     <div className='flex justify-end'>
-                        <Link href={`/projects/${encodeURIComponent(props.project._id)}`}>
+                        <Link scroll={false} href={`/projects/${encodeURIComponent(props.project._id)}`}>
                             <ArrowDownCircle className="m-1" />
                         </Link>
 

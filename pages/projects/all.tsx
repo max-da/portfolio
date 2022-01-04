@@ -11,6 +11,7 @@ interface IProjectsArr {
 const Projects = (props: IProjectsArr) => {
     const { projects } = props
     console.log(projects)
+
     let displayProjects = projects.map((project) => {
      
        
@@ -38,9 +39,7 @@ const Projects = (props: IProjectsArr) => {
 
 
 }
-
-export async function getServerSideProps() {
-    // get todo data from API
+export async function getStaticProps() {
     const res = await fetch("http://localhost:3000/api/main")
     const projects: Iprojects = await res.json()
 
@@ -48,5 +47,16 @@ export async function getServerSideProps() {
     return {
         props: { projects },
     }
-}
+  }
+/* export async function getServerSideProps() {
+    // get todo data from API
+  
+    const res = await fetch("http://localhost:3000/api/main")
+    const projects: Iprojects = await res.json()
+
+    // return props
+    return {
+        props: { projects },
+    }
+} */
 export default Projects

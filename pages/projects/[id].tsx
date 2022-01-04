@@ -1,26 +1,26 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { Navbar } from '../../components/Navbar'
 import { Iprojects } from '../../utils/interfaces'
 import { ImageViewer } from '../../components/ImageViewer'
 import { Project } from '../../components/Project'
+import { useRouter } from 'next/router'
+import axios from 'axios'
 
 interface IProjectsArr {
     projects: Iprojects
 }
-const FocusView = (props: IProjectsArr) => {
-    console.log(props.projects)
-    console.log("HÄR")
-    let projects = props
-    
+const FocusView = (props: any) => {
+    console.log("HEJS")
 
+    console.log(props.project[0]._id)
     return (
         <>
             <Navbar />
             <div className="bg-blue-300 flex flex-col justify-start items-center h-screen" >
-            <Project project={props.projects} focus={true}/>
-                
+            <Project project={props.project[0]} focus={true}></Project>
+      
 
 
 
@@ -32,14 +32,50 @@ const FocusView = (props: IProjectsArr) => {
 
 }
 
-export async function getServerSideProps() {
-    // get todo data from API
-    const res = await fetch("http://localhost:8000/spec")
-    const projects: Iprojects = await res.json()
-   
-    // return props
+export const getStaticProps: GetStaticProps = async (context) => {
+    const { params } = context
+
+    if (params) {
+
+        try {
+            const res = await fetch(`http://localhost:3000/api/${params.id}`)
+            console.log(res.status)
+            const data = await res.json()
+
+            return {
+                props: {
+                    project: data
+                }
+            }
+        }
+        catch (err) {
+            console.log(err)
+            return {
+                props: {}
+            }
+        }
+
+    }
+    else {
+        return {
+            props: {}
+        }
+    }
+
+
+}
+
+export const getStaticPaths = async () => {
+    const res = await fetch("http://localhost:3000/api/main")
+    const projects: Iprojects[] = await res.json()
+    const paths = projects.map((project: Iprojects) => ({
+        params: { id: `${project._id}` },
+    }))
     return {
-        props: { projects },
+        paths,
+        fallback: false
     }
 }
+
+
 export default FocusView

@@ -25,7 +25,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 })
   .get(async (req, res) => {
     const { Project } = await connect();
-    console.log(await Project.find({}));
+
     res.json(await Project.find({}));
   })
   .post(upload.array("image"), async (req, res) => {
@@ -36,7 +36,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 
       if (req.files) {
         for (const [key, value] of Object.entries(req.files)) {
-          console.log(`${key}: ${value.filename}`);
+   
           let image = {
             image: { path: value.filename },
           };
