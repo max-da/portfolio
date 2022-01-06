@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../utils/dbConnect";
 import nc from "next-connect";
+import { Iform, Iprojects } from "../../utils/interfaces";
 
 const handler = nc<NextApiRequest, NextApiResponse>({
     onError: (err, req, res, next) => {
@@ -12,17 +13,45 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     },
 })
     .get(async (req, res) => {
-     const projectId = req.query.id
-        console.log(projectId)
-        console.log("HEJSAN")
+        const projectId = req.query.id
+
         const { Project } = await connect();
-        console.log(await Project.find({_id:projectId}));
-        res.json(await Project.find({_id:projectId}));
-   
+
+        res.json(await Project.find({ _id: projectId }));
+
     })
-    export default handler;
+    .put(async (req, res) => {
+        const projectId = req.query.id
+
+        try {
+            console.log("AOSJLKDAS")
+            const form: Iform = req.body
+            const { Project } = await connect();
+            await Project.findOneAndUpdate({ id: projectId }, form)
+
+            res.status(200).json("nice")
+        } catch (error) {
+            console.log(error)
+        }
+    })
+    .delete(async (req, res) => {
+
+        try {
+            const projectId = req.query.id
+            const { Project } = await connect();
+            await Project.deleteOne({ id: projectId })
+            
+            res.status(200).json("nice")
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    })
+export default handler;
+
 export const config = {
-  api: {
-    bodyParser: false, // Disallow body parsing, consume as stream
-  },
+    api: {
+        bodyParser: true, // Disallow body parsing, consume as stream
+    },
 };

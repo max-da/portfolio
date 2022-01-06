@@ -1,72 +1,188 @@
-import { Iprojects } from "../utils/interfaces";
+import { Iform, Iprojects } from "../utils/interfaces";
 import { ImageViewer } from "./ImageViewer";
-import { ArrowDownCircle, GitHub, Link as LinkIcon, ArrowUpCircle,Edit } from "react-feather"
+import { ArrowDownCircle, GitHub, Link as LinkIcon, ArrowUpCircle, Edit, X } from "react-feather"
 import Link from "next/link";
+import { ChangeEvent, useEffect, useState } from "react";
+import { EditField } from "./EditField";
+import axios from "axios";
+import { ConfirmModal } from "./ConfirmModal";
+import { Overlay } from "./Overlay";
+import { useRouter } from "next/router";
 
 interface Iprops {
     project: Iprojects
     focus: boolean;
 }
+
+
 export const Project = (props: Iprops) => {
-    console.log(props)
+    const initialValue: Iform = {
+
+        name: props.project.name,
+        techStack: props.project.techStack,
+        description: props.project.description,
+        createDate: props.project.createdDate,
+        gitLink: props.project.gitLink,
+        liveLink: props.project.liveLink
+    }
+
+    const [form, setForm] = useState<Iform>(initialValue)
+    const [editMode, setEditMode] = useState(false);
+    const [confirmModal, setConfirmModal] = useState(false)
+    const router = useRouter()
     let date = new Date(props.project.createdDate)
     let year = date.getFullYear()
     let month = date.getMonth()
     let day = date.getDate()
-    console.log(props.project.createdDate)
+
+
+    const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setForm({ ...form, [e.currentTarget.name]: e.target.value });
+
+    }
+
+    const abortChanges = () => {
+        setEditMode(false)
+        setForm(initialValue)
+    }
+
+    const saveChanges = async () => {
+        if (form != initialValue) {
+            axios.put("/api/" + props.project._id, form)
+                .then((res) => {
+                    console.log(res)
+                    if (res.status === 200) {
+                        setEditMode(false)
+                    }
+                })
+
+        }
+        else {
+            setEditMode(false)
+        }
+
+    }
+    const deletePost = async () => {
+        console.log("HEJ")
+        axios.delete("/api/" + props.project._id)
+            .then((res) => {
+                console.log(res)
+                if (res.status === 200) {
+                    router.push("/projects/all")
+                }
+            })
+    }
+
     return (
-        <div key={props.project._id} className={` ${props.focus ? "w-5/5" : "w-4/5"}`}>
+        <>
+            {confirmModal ? (
+                <ConfirmModal confirm={deletePost} cancel={() => setConfirmModal(false)} message="Är du säker på att du vill ta bort detta projekt?" />
 
-            <div className={`bg-red-800 w-5/5 h-5/5 rounded m-1 `} >
-                <div className="flex justify-between items-center">
-                    <h3 className='m-1'>
-                        {props.project.name}
+            ) : null}
 
-                    </h3>
-                    <Edit/>
-                    {props.project.createdDate ? (
-                        <span className="m-1">{year + "/" + month + "/" + day}</span>
-                    ) : null}
-                </div>
 
-                <ImageViewer focus={props.focus} images={props.project.images} />
-                {props.focus ? (
-                    <>
-                        <div className="flex justify-center">
-                            <h2>{props.project.techStack}</h2>
-                        </div>
-                        <div>
-                            <span>{props.project.description}</span>
+            <div key={props.project._id} className={`w-screen`}>
+                <button onClick={() => console.log(form)}>maxtest</button>
 
-                        </div>
-                        <div className="flex justify-start">
-                            <Link href={props.project.gitLink}>
-                                <GitHub />
-                            </Link>
-                            {props.project.liveLink ? (
-                                <Link href={props.project.liveLink}>
-                                    <LinkIcon />
-                                </Link>
-                            ) : null}
+                <div className={`bg-red-800  rounded m-1 `} >
 
-                        </div>
-                        <div className='flex justify-end'>
-                            <Link scroll={false} href={`/projects/all`}>
-                                <ArrowUpCircle className="m-1" />
-                            </Link>
+                    <div className="flex justify-between items-center">
+                        <h3 className='m-1'>
 
-                        </div>
-                    </>
-                ) : (
-                    <div className='flex justify-end'>
-                        <Link scroll={false} href={`/projects/${encodeURIComponent(props.project._id)}`}>
-                            <ArrowDownCircle className="m-1" />
-                        </Link>
+                            <EditField name={"name"} content={form.name} editMode={editMode} onChange={onChange} />
+                        </h3>
+                        {/* FOCUS AND LOG IN */}
+                        {props.focus ? (
+                            <>
+                                {/* is login? */}
+                                {editMode}
+                                {editMode ? (
+                                    <>
+                                        <button onClick={saveChanges}>Spara</button>
+                                        <button onClick={abortChanges}>Avbryt</button>
 
+                                    </>
+                                ) : (
+                                    <>
+                                        <button onClick={() => { setEditMode(editMode => !editMode) }}>
+                                            <Edit />
+                                        </button>
+                                        <button onClick={() => { setConfirmModal(true) }}>
+                                            <X />
+                                        </button>
+
+                                    </>
+                                )}
+
+
+                            </>
+                        ) : null}
+                        {props.project.createdDate ? (
+                            <EditField name="createdDate" content={year + "/" + month + "/" + day} editMode={editMode} date={true} onChange={onChange} />
+
+                        ) : null}
                     </div>
-                )}
 
+                    <ImageViewer focus={props.focus} images={props.project.images} />
+                    {props.focus ? (
+                        <>
+
+
+                            <div className="flex justify-center">
+                                <h2>
+                                    <EditField name="techStack" content={form.techStack} editMode={editMode} onChange={onChange} />
+
+                                </h2>
+                            </div>
+                            <div>
+                                <span>
+                                    <EditField name="description" content={form.description} editMode={editMode} description={true} onChange={onChange} />
+                                </span>
+
+                            </div>
+                            <div className="flex justify-start">
+
+                                {editMode ? (
+                                    <>
+                                        <EditField name="gitLink" content={form.gitLink} editMode={editMode} onChange={onChange} />
+                                        {props.project.liveLink ? (
+                                            <EditField name="liveLink" content={form.liveLink} editMode={editMode} onChange={onChange} />
+                                        ) : null}
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link href={form.gitLink}>
+                                            <GitHub />
+                                        </Link>
+                                        {props.project.liveLink ? (
+                                            <Link href={form.liveLink}>
+                                                <LinkIcon />
+                                            </Link>
+                                        ) : null}
+                                    </>
+                                )}
+
+                            </div>
+                            <div className='flex justify-end'>
+                                <Link scroll={false} href={`/projects/all`}>
+                                    <ArrowUpCircle className="m-1" />
+                                </Link>
+
+                            </div>
+                        </>
+
+
+                    ) : (
+                        <div className='flex justify-end'>
+                            <Link scroll={false} href={`/projects/${encodeURIComponent(props.project._id)}`}>
+                                <ArrowDownCircle className="m-1" />
+                            </Link>
+
+                        </div>
+                    )}
+
+                </div>
             </div>
-        </div>
+        </>
     )
 }
