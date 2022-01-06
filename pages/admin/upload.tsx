@@ -3,16 +3,8 @@ import Link from 'next/link'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import axios, { AxiosError } from "axios";
 import { Navbar } from '../../components/Navbar';
-interface Iform {
-    name: string;
-    techStack: string;
-    description: string;
-    createDate: Date;
-    gitLink: string;
-    liveLink: string;
+import { Iform } from '../../utils/interfaces';
 
-
-}
 interface IDisplayObject {
     [key: string]: {
         name:string;
@@ -22,6 +14,7 @@ interface IDisplayObject {
         
     }
 }
+
 let projectInfo: IDisplayObject = {
     name:{
         name:"name",
