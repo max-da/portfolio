@@ -1,4 +1,4 @@
-import { Overlay } from "./Overlay"
+import { Overlay } from "../Overlay"
 import { AlertTriangle } from "react-feather"
 
 interface Iprops {

@@ -1,15 +1,19 @@
-import type { NextPage } from 'next'
-import Link from 'next/link'
-import { useEffect } from 'react'
+
+
 import { Navbar } from '../../components/Navbar'
 import { Iprojects } from '../../utils/interfaces'
-import { ImageViewer } from '../../components/ImageViewer'
+
 import { Project } from '../../components/Project'
+import { useEffect } from 'react'
+import axios from 'axios'
+import useAuth from '../../utils/useAuth'
+
 interface IProjectsArr {
     projects: Iprojects[]
 }
 const Projects = (props: IProjectsArr) => {
     const { projects } = props
+    const isLoggedIn = useAuth()
     console.log(projects)
 
     let displayProjects = projects.map((project) => {
@@ -39,15 +43,20 @@ const Projects = (props: IProjectsArr) => {
 
 
 }
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const res = await fetch("http://localhost:3000/api/main")
     const projects: Iprojects = await res.json()
 
     // return props
     return {
         props: { projects },
+   
+        
     }
+    
   }
+
+
 /* export async function getServerSideProps() {
     // get todo data from API
   

@@ -24,6 +24,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
   },
 })
   .get(async (req, res) => {
+
     const { Project } = await connect();
 
     res.json(await Project.find({}));
@@ -36,14 +37,13 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 
       if (req.files) {
         for (const [key, value] of Object.entries(req.files)) {
-   
           let image = {
             image: { path: value.filename },
           };
           images.push(image);
         }
       }
-  
+
       const { Project } = await connect();
       await new Project({
         name: name,
@@ -56,8 +56,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
       }).save();
     } catch (err) {
       console.log(err);
-      res.status(400).json(err)
-      
+      res.status(400).json(err);
     }
   });
 export default handler;
