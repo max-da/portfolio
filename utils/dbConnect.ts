@@ -1,4 +1,4 @@
-import mongoose, { Model, mongo } from "mongoose";
+import mongoose, { Collection, Model, mongo } from "mongoose";
 
 const { DATABASE_URL } = process.env;
 
@@ -25,8 +25,17 @@ export const connect = async () => {
       },
     ],
   });
+  const adminSchema = new mongoose.Schema({
+    username:String,
+    password: String,
+   /*  token: String,
+    tokenExpiration: Date, */
+  
+  });
+ 
+ 
+  const Admins = mongoose.models.admins || mongoose.model("admins", adminSchema);
+  const Project = mongoose.models.Project || mongoose.model("Project", projectSchema);
 
-  const Project =
-    mongoose.models.Project || mongoose.model("Project", projectSchema);
-  return { connection, Project };
+  return { connection, Project, Admins};
 };
