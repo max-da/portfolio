@@ -5,10 +5,12 @@ import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
 import { EditField } from "./EditField";
 import axios from "axios";
+
 import { ConfirmModal } from "./modals/ConfirmModal";
 
 import { useRouter } from "next/router";
 import useAuth from "../utils/useAuth";
+
 
 interface Iprops {
     project: Iprojects
@@ -26,7 +28,9 @@ export const Project = (props: Iprops) => {
         gitLink: props.project.gitLink,
         liveLink: props.project.liveLink
     }
+
     const {isLoggedIn} = useAuth()
+
     const [form, setForm] = useState<Iform>(initialValue)
     const [editMode, setEditMode] = useState(false);
     const [confirmModal, setConfirmModal] = useState(false)
@@ -93,7 +97,9 @@ export const Project = (props: Iprops) => {
                             <EditField name={"name"} content={form.name} editMode={editMode} onChange={onChange} />
                         </h3>
                         {/* FOCUS AND LOG IN */}
+
                         {props.focus && isLoggedIn ? (
+
                             <>
                                 {/* is login? */}
                                 {editMode}
