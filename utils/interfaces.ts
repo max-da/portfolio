@@ -4,7 +4,15 @@ export interface IImage{
    }
    
 }
-
+export interface Imodal {
+    cancel: () => void;
+    title:string;
+    message: string;
+}
+export interface Ierror{
+    statusCode: number;
+    errorMessage:string;
+}
 
 export interface Iprojects {
     _id:string;

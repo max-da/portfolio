@@ -1,7 +1,9 @@
 import Link from "next/link"
+import useAuth from "../utils/useAuth"
 
 export const Navbar = () => {
-    return(
+    const {isLoggedIn} =  useAuth()
+    return (
         <div className="flex ">
             <ul className="flex w-screen justify-between">
                 <li>
@@ -18,6 +20,20 @@ export const Navbar = () => {
                     <Link href="/admin/upload">
                         <a>Upload</a>
                     </Link>
+                </li>
+
+                <li>
+        
+                    {isLoggedIn ? (
+                        <Link href="/admin/login">
+                            <a>trye</a>
+                        </Link>
+                    ) : (
+                        <Link href="/admin/login">
+                            <a>falz</a>
+                        </Link>
+                    )}
+
                 </li>
             </ul>
         </div>

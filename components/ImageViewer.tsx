@@ -13,6 +13,7 @@ export const ImageViewer = (props:Iprops) => {
     const [imageSize,setImageSize] = useState({
         height:400, width:500
     })
+    console.log(images)
     let src = "/uploads/" + images[imageIndex].image.path   
     console.log(props.images)
 
