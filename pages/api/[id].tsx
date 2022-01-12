@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../utils/dbConnect";
 import nc from "next-connect";
-import { Iform, Iprojects } from "../../utils/interfaces";
+import { IFormProject, Iprojects } from "../../utils/interfaces";
 
 const handler = nc<NextApiRequest, NextApiResponse>({
     onError: (err, req, res, next) => {
@@ -25,7 +25,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 
         try {
             console.log("AOSJLKDAS")
-            const form: Iform = req.body
+            const form: IFormProject = req.body
             const { Project } = await connect();
             await Project.findOneAndUpdate({ id: projectId }, form)
 

@@ -26,13 +26,31 @@ export interface Iprojects {
   
 }
 
-export interface Iform {
+export interface IFormProject {
     name: string;
     techStack: string;
     description: string;
     createDate: Date;
     gitLink: string;
     liveLink: string;
+}
 
+export interface IFormExp{
+    name:string;
+    description:string;
+    startDate:Date;
+    endDate?:Date;
+    current?:boolean;
 
 }
+export interface IDisplayObject {
+    [key: string]: {
+        name:string;
+        displayName:string;
+        required:boolean;
+        date?:boolean;
+      
+        
+    }
+}
+
