@@ -34,7 +34,7 @@ export const Login = (props: Iprops) => {
       }
     })
       .then((res) => {
-        router.push("/projects/all")
+        router.push("/admin/dashboard")
       })
       .catch((err: AxiosError) => {
         console.log("HÖRRI")
