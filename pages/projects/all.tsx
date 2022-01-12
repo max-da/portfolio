@@ -44,7 +44,7 @@ const Projects = (props: IProjectsArr) => {
 
 }
 export async function getServerSideProps() {
-    const res = await fetch("http://localhost:3000/api/main")
+    const res = await fetch("http://localhost:3000/api/content/projects")
     const projects: Iprojects = await res.json()
 
     // return props

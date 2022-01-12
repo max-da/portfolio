@@ -12,7 +12,8 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     res.status(404).end("Page is not found");
   },
 })
-  .get(async (req, res) => {
+.get(async (req, res) => {
+
     const { Experience } = await connect();
 
     res.json(await Experience.find({}));

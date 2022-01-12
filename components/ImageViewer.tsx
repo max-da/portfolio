@@ -15,7 +15,7 @@ export const ImageViewer = (props: Iprops) => {
     })
     console.log(images)
     let src = "/uploads/" + images[imageIndex].image.path
-
+    
     console.log(props.images)
 
     useEffect(() => {

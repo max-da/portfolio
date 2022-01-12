@@ -17,7 +17,7 @@ export const Navbar = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link href="/admin/upload">
+                    <Link href="/admin/dashboard">
                         <a>Upload</a>
                     </Link>
                 </li>
