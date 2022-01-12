@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { connect } from "../../utils/dbConnect";
+import { connect } from "../../../utils/dbConnect";
 import multer from "multer";
 import nc from "next-connect";
-import { IImage } from "../../utils/interfaces";
+import { IImage } from "../../../utils/interfaces";
 
 
 const upload = multer({
@@ -40,6 +40,8 @@ const handler = nc<NextApiRequest, NextApiResponse>({
           };
           images.push(image);
         }
+      }else{
+          res.status(500).json("Err")
       }
 
       const { Project } = await connect();

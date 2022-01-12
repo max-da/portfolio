@@ -25,17 +25,26 @@ export const connect = async () => {
       },
     ],
   });
+  const experienceSchema = new mongoose.Schema({
+    name: {type:String, required:true},
+    description: {type:String, required:true},
+    startDate:{type:Date, required:true},
+    endDate:Date,
+    current:Boolean
+  
+  
+  });
   const adminSchema = new mongoose.Schema({
     username:String,
     password: String,
-   /*  token: String,
-    tokenExpiration: Date, */
+  
   
   });
+  
  
- 
+  const Experience = mongoose.models.Experiences || mongoose.model("Experiences", experienceSchema);
   const Admins = mongoose.models.admins || mongoose.model("admins", adminSchema);
   const Project = mongoose.models.Project || mongoose.model("Project", projectSchema);
 
-  return { connection, Project, Admins};
+  return { connection, Project, Admins, Experience};
 };

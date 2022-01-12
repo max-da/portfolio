@@ -1,4 +1,4 @@
-import { Iform, Iprojects } from "../utils/interfaces";
+import { IFormProject, Iprojects } from "../utils/interfaces";
 import { ImageViewer } from "./ImageViewer";
 import { ArrowDownCircle, GitHub, Link as LinkIcon, ArrowUpCircle, Edit, X } from "react-feather"
 import Link from "next/link";
@@ -17,7 +17,7 @@ interface Iprops {
 
 
 export const Project = (props: Iprops) => {
-    const initialValue: Iform = {
+    const initialValue: IFormProject = {
 
         name: props.project.name,
         techStack: props.project.techStack,
@@ -27,7 +27,7 @@ export const Project = (props: Iprops) => {
         liveLink: props.project.liveLink
     }
     const {isLoggedIn} = useAuth()
-    const [form, setForm] = useState<Iform>(initialValue)
+    const [form, setForm] = useState<IFormProject>(initialValue)
     const [editMode, setEditMode] = useState(false);
     const [confirmModal, setConfirmModal] = useState(false)
     const router = useRouter()
