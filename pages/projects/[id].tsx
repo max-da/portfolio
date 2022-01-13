@@ -1,7 +1,7 @@
 import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
 import { useEffect } from 'react'
-import { Navbar } from '../../components/Navbar'
+
 import { Iprojects } from '../../utils/interfaces'
 import { ImageViewer } from '../../components/ImageViewer'
 import { Project } from '../../components/Project'
@@ -17,7 +17,7 @@ const FocusView = (props: any) => {
     console.log(props.project[0]._id)
     return (
         <>
-            <Navbar />
+          
             <div className="bg-blue-300 flex flex-col justify-start items-center h-screen" >
             <Project project={props.project[0]} focus={true}></Project>
       
