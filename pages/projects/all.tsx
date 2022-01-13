@@ -1,6 +1,6 @@
 
 
-import { Navbar } from '../../components/Navbar'
+
 import { Iprojects } from '../../utils/interfaces'
 
 import { Project } from '../../components/Project'
@@ -29,7 +29,7 @@ const Projects = (props: IProjectsArr) => {
 
     return (
         <>
-            <Navbar />
+      
             <div className="bg-blue-300 flex flex-col justify-center items-center" >
 
                 {displayProjects}
