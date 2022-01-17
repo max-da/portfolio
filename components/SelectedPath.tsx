@@ -1,3 +1,4 @@
+import { route } from "next/dist/server/router"
 import { useEffect, useState } from "react"
 import { animated, config, useTransition } from "react-spring"
 
@@ -8,7 +9,13 @@ interface Iprops {
 }
 const SelectedPath = (props: Iprops) => {
   const [selected, setSelected] = useState(false)
-
+  const transition = useTransition(selected, {
+    from:{opacity:0,x:-100},
+    enter:{opacity:1, x:0},
+    leave:{opacity:0,},
+    reverse:selected,
+    config: config.stiff,
+  })
   useEffect(() => {
     if (props.name === props.current) {
       setSelected(true)
@@ -18,20 +25,21 @@ const SelectedPath = (props: Iprops) => {
       setSelected(false)
     }
   }, [props.current])
- 
- 
+
+
   return (
     <>
 
-      <div className="  w-full mt-2">
-        {selected ? (
-          <div className="w-full h-1 bg-white " >
-          </div>
-        ) : (
-          <div className="w-full h-1 bg-blue-200 " ></div>
-        )}
-      </div>
-
+  
+      <div className="  h-full w-full mt-3 bg-purple">
+        {transition((styleProps, item) =>
+          item ?
+            <animated.div style={styleProps} className="w-full h-full bg-red-500 " />
+            :
+            ""
+       
+      )}
+       </div>
     </>
 
   )

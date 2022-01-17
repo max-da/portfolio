@@ -22,7 +22,7 @@ export const EditField = (props: Iprops) => {
                 <>
 
                     {props.description ? (
-                        <textarea name={props.name} rows={8} className="w-full h-full bg-transparent" defaultValue={props.content} onChange={onChange} >
+                        <textarea name={props.name} rows={12} cols={40} className="w-full  h-full bg-transparent" defaultValue={props.content} onChange={onChange} >
 
                         </textarea>
                     ) : (
@@ -30,10 +30,13 @@ export const EditField = (props: Iprops) => {
                     )}
                 </>
             ) : (
-                <>
-
-                    {props.content}
-                </>
+              <>
+       
+                {props.content}
+          
+                
+                  
+              </>
             )}
         </>
 

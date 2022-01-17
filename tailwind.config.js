@@ -6,10 +6,18 @@ module.exports = {
   theme: {
     container:{
       center:true,
+   
     },
+  
     extend:{
       fontFamily:{
-        "roboto":["Roboto"]
+        "roboto":["Roboto"],
+        "sans":["Roboto"]
+      },
+      colors:{
+       "bgWhite": "#FFFCF2",
+       "aside":"#A57F60",
+       "purple":"#290043"
       }
     }
   },

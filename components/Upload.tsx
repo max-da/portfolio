@@ -27,7 +27,7 @@ export const Upload = (props: Iprops) => {
     const { API_URL } = process.env
     const [files, setFiles] = useState<FileList | null>()
     const [error, setError] = useState("")
-    const [postPath, setPostPath] = useState("")
+    const [postPath, setPostPath] = useState("/api/content/projects")
     let initial: IFormExp | IFormProject = {
         name: "",
         techStack: "",
@@ -59,6 +59,8 @@ export const Upload = (props: Iprops) => {
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.currentTarget.files) {
             setFiles(e.currentTarget.files)
+        } else {
+            setPostPath("/api/content/experiences")
         }
         if (e.target.value) {
 
@@ -85,13 +87,13 @@ export const Upload = (props: Iprops) => {
                 formData.append("image", element)
 
             }
-           postForm = formData
+            postForm = formData
         }
-      
+
         console.log("HÄRÄRÄRÄÄR")
         console.log(formData.entries())
 
-        await axios.post(postPath, postForm,options
+        await axios.post(postPath, postForm, options
         )
             .then((res) => {
                 console.log(res)
@@ -108,32 +110,51 @@ export const Upload = (props: Iprops) => {
 
     }
 
-    useEffect(() => {
-
-        const path = router.pathname.replace("admin", "api")
-        console.log(path)
-        setPostPath(path)
-    }, [])
+    /*   useEffect(() => {
+  
+          const path = router.pathname.replace("admin", "api")
+          console.log(path)
+          setPostPath(path)
+      }, []) */
     return (
         <>
 
-            <div className="bg-blue-300 flex flex-col justify-center items-center h-screen" >
+            <div className="flex flex-col items-center justify-center w-full  " >
                 {error ? (
                     error
                 ) : null}
-                <div className='flex-col flex justify-center items-center h-96 '>
-                    <form className='flex-col flex' encType='multipart/form-data' >
+                <div className='flex-col flex justify-center items-center w-4/5 mt-5 border border-red-500 drop-shadow-2xl rounded '>
+                    <form className='flex-col flex justify-center  w-full' encType='multipart/form-data' >
                         {Object.entries(projectInfo).map(([key, value]) => {
                             return (
-                                <input key={key} type={value.date ? "Date" : "text"} onChange={(e) => onChange(e)} className='m-1' placeholder={value.displayName} name={key} />
+                                
+                                <div className='bg-white border flex flex-col'>
+                                <label className='border-b w-2/5' htmlFor={key} >
+                                    <span>
+                                        {value.displayName}
+                                    </span>
+                                </label>
+                                <input key={key} type={value.date ? "Date" : "text"}
+                                    onChange={(e) => onChange(e)}
+                                    className=' text-2xl'
+                                    placeholder={"..."}
+                                    name={key} />
+                                </div>
                             )
                         })}
                         {props.files ? (
-                            <input multiple className='text-3xl' name="image" type="file" onChange={(e: ChangeEvent<HTMLInputElement>) => { onChange(e) }} />
+                            <>
+                            <span>Bilder</span>
+                            <div className='w-full flex'>
+
+                                <input multiple className='text-2xl bg-red-500' name="image" type="file" onChange={(e: ChangeEvent<HTMLInputElement>) => { onChange(e) }} />
+
+                            </div>
+                            </>
                         ) : null}
 
 
-                        <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        <button type="button" className="bg-purple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                             onClick={() => { handleSubmit() }}>
                             Submit
                         </button>
