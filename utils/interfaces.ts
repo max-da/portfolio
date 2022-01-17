@@ -26,6 +26,11 @@ export interface Iprojects {
   
 }
 
+export interface IRoute{
+
+    path:string;
+}
+
 export interface IFormProject {
     name: string;
     techStack: string;

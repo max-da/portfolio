@@ -40,24 +40,13 @@ const Home = () => {
   const [navigation, setNavigation] = useState(navRoutes)
   const [index, setIndex] = useState(0)
   const router = useRouter()
-  const props = useSpring({
-    from: {
-      color: '#ee3a43',
-      rotateX: 0,
-      transformOrigin: "center",
 
-    },
-    to: {
-      color: '#277ef4',
-      rotateX: 720,
+  const transition = useTransition(navigation[index], {
+    from: { opacity: 0, position:"absolute", y: -100 },
+    enter: { opacity: 1, y: 0},
+    leave: { opacity: 0, y: 100 },
 
-      transformOrigin: "center",
-    },
-    config: {
-      duration: 3000,
-      easing: easings.easeInOutQuart,
-    },
-    loop: { reverse: true },
+    config: config.stiff,
   })
   const onClickArrow = () => {
     router.push(navigation[index].path)
@@ -79,53 +68,53 @@ const Home = () => {
   })
 
 
-  useEffect(() => {
-    setTimeout(() => { incrementIndex() }, 3000)
-  }, [index])
+  /*   useEffect(() => {
+      setTimeout(() => { incrementIndex() }, 3000)
+    }, [index]) */
   return (
     <>
 
 
 
-      <div className='flex flex-col content-center h-screen w-screen relative items-center'>
-        <div className='bg-blue-200 w-3/5 relative top-1/4 drop-shadow-lg'>
+      {/* <div className='flex flex-col h-screen w-screen  items-center'>
+        <div className='h-1/6 w-3/5 relative top-1/4 drop-shadow-lg  flex flex-col justify-between max-w-lg'>
 
 
-          <div className='w-3/5 h-21  relative bg-blue-800'>
-            <div className='top-1/4 relative flex justify-between w-4/5 '>
-              <h1 className='text-6xl font-roboto italic bg-blue-500 ' >max</h1>
-              <div className=''>
-                <animated.div style={props} className='  text-5xl flex justify-start hover:cursor-pointer select-none' onClick={onClickArrow}>
-                  <span className='select-none' >
+          <div className='w-3/5 h-21  relative bg-blue-800 drop-shadow-xl'>
+            <div className='top-1/4 relative flex justify-between w-4/5 b flex-col'>
+              <h1 className='text-5xl font-roboto italic bg-blue-500 ' >max</h1>
 
 
-                  </span>
-                </animated.div>
+    
+
+       
+              <div className='h-5'>
+                {transition((styleProps, item) =>
+                  item ? <animated.h1 style={styleProps}>
+                    <h1 className='text-5xl font-roboto italic hover:cursor-pointer select-none drop-shadow-xl' onClick={incrementIndex} >
+                    {item.name}
+                    </h1>
+                  </animated.h1>:""
+                )}
+
               </div>
 
-            </div>
-            <>
-
-            </>
-            <div className='top-1/4 relative flex  w-5/5 justify-between flex-col'>
 
 
+        
 
-
-              <h1 onClick={incrementIndex} className='text-6xl font-roboto italic hover:cursor-pointer select-none' >{navigation[index].name}</h1>
-
-
+              </div>
 
 
             </div>
 
 
-          </div>
+      
           <div className='flex justify-between w-5/5 h-2'>
             {selection}
           </div>
         </div>
-      </div>
+      </div> */}
 
 
 

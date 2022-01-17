@@ -18,13 +18,13 @@ const FocusView = (props: any) => {
     return (
         <>
           
-            <div className="bg-blue-300 flex flex-col justify-start items-center h-screen" >
+           
             <Project project={props.project[0]} focus={true}></Project>
       
 
 
 
-            </div>
+          
         </>
     )
 
@@ -66,7 +66,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export const getStaticPaths = async () => {
-    const res = await fetch("http://localhost:3000/api/main")
+    const res = await fetch("http://localhost:3000/api/content/projects")
     const projects: Iprojects[] = await res.json()
     const paths = projects.map((project: Iprojects) => ({
         params: { id: `${project._id}` },
