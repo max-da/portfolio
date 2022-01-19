@@ -1,7 +1,7 @@
 
 
 
-import { IFormExp, Iprojects } from '../../../utils/interfaces'
+import { IExperience, IFormExp, Iprojects } from '../../../utils/interfaces'
 
 import { Project } from '../../../components/Project'
 import { useEffect, useState } from 'react'
@@ -9,21 +9,25 @@ import axios from 'axios'
 import useAuth from '../../../utils/useAuth'
 import { useInView } from 'react-intersection-observer'
 import { Experience } from '../../../components/Experience'
+import { connect } from '../../../utils/dbConnect'
+import { InferGetStaticPropsType } from 'next'
+import Link from 'next/link'
 
-interface Iprops {
+/* interface Iprops {
     experiences: IFormExp[]
 }
+ */
 
-const allExp = (props: Iprops) => {
+const allExp = ({ experiences }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 
-    const { experiences } = props
+
     const isLoggedIn = useAuth()
+    const parsed = JSON.parse(experiences)
 
 
 
-
-    let displayExperiences = experiences.map((experience, i) => {
+    let displayExperiences: IExperience[] = parsed.map((experience: IExperience, i: number) => {
 
 
 
@@ -40,11 +44,22 @@ const allExp = (props: Iprops) => {
 
 
         <div className="flex justify-center " >
-            <div className='w-4/5 flex  flex-col align-center justify-center'>
-            {displayExperiences}
+            <div className='w-4/5 flex max-w-md  flex-col align-center justify-center'>
+            {isLoggedIn.isLoggedIn ? (
+                <Link href="/admin/upload/experience">
+                    <button className="text-2xl hover:bg-red-500 rounded-lg border mt-5 p-3 bg-purple text-bgWhite drop-shadow-xl">
+                        Ladda upp ny erfarenhet
+                    </button>
+                </Link>
+            ) : (null)}
+                {displayExperiences}
+                    
+
+                
             </div>
-   
-    
+       
+
+
         </div>
 
     )
@@ -52,17 +67,23 @@ const allExp = (props: Iprops) => {
 
 
 }
-export async function getServerSideProps() {
-    const res = await fetch("http://localhost:3000/api/content/experiences")
-    const experiences: IFormExp = await res.json()
 
-    // return props
+export async function getStaticProps() {
+
+
+    const { Experience } = await connect();
+
+    let temp = await Experience.find({});
+    console.log(temp)
+    let experiences = JSON.stringify(temp)
+
     return {
-        props: { experiences },
-
-
+        props: {
+            experiences
+        }
     }
 
 }
+
 
 export default allExp

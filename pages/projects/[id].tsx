@@ -1,4 +1,4 @@
-import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
+import type { GetServerSideProps, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
@@ -7,19 +7,18 @@ import { ImageViewer } from '../../components/ImageViewer'
 import { Project } from '../../components/Project'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import { connect } from '../../utils/dbConnect'
 
-interface IProjectsArr {
-    projects: Iprojects
-}
-const FocusView = (props: any) => {
-    console.log("HEJS")
 
-    console.log(props.project[0]._id)
+const FocusView = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>) => {
+
+    const project: Iprojects = JSON.parse(projects)
+
     return (
         <>
           
            
-            <Project project={props.project[0]} focus={true}></Project>
+            <Project project={project} focus={true}></Project> 
       
 
 
@@ -38,15 +37,17 @@ export const getStaticProps: GetStaticProps = async (context) => {
     if (params) {
 
         try {
-            const res = await fetch(`http://localhost:3000/api/${params.id}`)
-            console.log(res.status)
-            const data = await res.json()
+            const { Project } = await connect();
 
+            let temp = await Project.find({ _id: params.id });
+            let projects = JSON.stringify(temp)
+        
             return {
                 props: {
-                    project: data
+                    projects
                 }
             }
+           
         }
         catch (err) {
             console.log(err)
@@ -66,8 +67,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export const getStaticPaths = async () => {
-    const res = await fetch("http://localhost:3000/api/content/projects")
-    const projects: Iprojects[] = await res.json()
+    const { Project } = await connect();
+    let res:Iprojects[] = await Project.find({});
+
+    const projects: Iprojects[] = res
     const paths = projects.map((project: Iprojects) => ({
         params: { id: `${project._id}` },
     }))
@@ -79,3 +82,21 @@ export const getStaticPaths = async () => {
 
 
 export default FocusView
+
+
+
+/* 
+export const getStaticPaths = async () => {
+    const { Project } = await connect();
+    let x = await Project.find({});
+    const res = await fetch("http://localhost:3000/api/content/projects")
+    const projects: Iprojects[] = await res.json()
+    const paths = projects.map((project: Iprojects) => ({
+        params: { id: `${project._id}` },
+    }))
+    return {
+        paths,
+        fallback: false
+    }
+}
+ */

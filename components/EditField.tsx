@@ -26,7 +26,10 @@ export const EditField = (props: Iprops) => {
 
                         </textarea>
                     ) : (
-                        <input name={props.name} className="border-none h-full bg-transparent" type={`${props.date ? "Date" : "text"}`} defaultValue={props.content}  onChange={onChange} />
+                   
+                        <input name={props.name} placeholder={props.name} className="underline bg-transparent " type={`${props.date ? "Date" : "text"}`} defaultValue={props.content}  onChange={onChange} />
+
+                    
                     )}
                 </>
             ) : (

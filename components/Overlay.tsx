@@ -1,13 +1,12 @@
 import React, { ReactChild, ReactNode } from "react"
+import useOverlay from "../utils/overlayContext"
 
-interface Iprops {
-    children: ReactNode;
-    onClick: () => void;
-}
-export const Overlay = (props: Iprops) => {
+
+export const Overlay = () => {
+    const {setToggle} = useOverlay()
     return (
-        <div className="w-screen h-screen bg-black z-10 absolute opacity-25" onClick={()=>props.onClick()}>
-            {props.children}
+        <div className="w-screen h-screen bg-black  absolute opacity-25" onClick={()=>setToggle()}>
+          
         </div>
 
     )

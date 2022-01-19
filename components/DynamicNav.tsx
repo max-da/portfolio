@@ -6,18 +6,19 @@ import { useEffect, useState } from 'react'
 import { useSpring, animated, easings, useTransition, config } from 'react-spring'
 import SelectedPath from '../components/SelectedPath'
 import { Iprojects, IRoute } from '../utils/interfaces'
+import useToggleOverlay from '../utils/overlayContext'
 import useAuth from '../utils/useAuth'
 
 
 interface IProjectsArr {
     projects: Iprojects[]
 }
-interface INavRoutes {
+export interface INavRoutes {
     name: string;
     path: string;
 
 }
-const navRoutes: INavRoutes[] = [
+export const navRoutes: INavRoutes[] = [
     {
         name: "dahlbom",
         path: "/"
@@ -37,14 +38,39 @@ const navRoutes: INavRoutes[] = [
 
 ]
 
+export const adminRoute: INavRoutes[] = [
+    {
+        name: "dahlbom",
+        path: "/"
+    },
+    {
+        name: "projects",
+        path: "/projects/all"
+    },
+    {
+        name: "experience",
+        path: "/about/experiences/all"
+    },
+    {
+        name: "contact",
+        path: "/about/contact"
+    },
+    {
+        name: "admin",
+        path: "/admin/dashboard"
+    }
+
+]
+
 interface Iprops {
     route: string;
     minimize: boolean;
 }
 export const DynamicNav = (props: Iprops) => {
+    let mutNavRoutes:INavRoutes[] = [...navRoutes]
     const isLoggedIn = useAuth()
     const [minimize, setMinimize] = useState(false)
-    const [navigation, setNavigation] = useState(navRoutes)
+    const [navigation, setNavigation] = useState<INavRoutes[]>([])
     const [index, setIndex] = useState(0)
     const router = useRouter()
 
@@ -55,6 +81,7 @@ export const DynamicNav = (props: Iprops) => {
 
         config: config.stiff,
     })
+
 
 
     const incrementIndex = () => {
@@ -69,9 +96,9 @@ export const DynamicNav = (props: Iprops) => {
         }
 
     }
-    const selection = navRoutes.map((route) => {
+    const selection = navigation.map((route) => {
         return (
-            <SelectedPath name={route.name} current={navigation[index].name} />
+            <SelectedPath key={route.name} routes={navigation} name={route.name} current={navigation[index].name} />
         )
 
     })
@@ -92,26 +119,34 @@ export const DynamicNav = (props: Iprops) => {
     }, [props.minimize])
 
     useEffect(() => {
-        if (isLoggedIn) {
-            navRoutes.push({
-                name: "admin",
-                path: "/admin/dashboard"
-            })
+
+        if (isLoggedIn.isLoggedIn) {
+            console.log(isLoggedIn)
+            console.log("MUTATA")
+            console.log(mutNavRoutes)
+            mutNavRoutes[0].name = "admin"
+            mutNavRoutes[0].path = "/admin/dashboard"
+            console.log(mutNavRoutes)
+           setNavigation(mutNavRoutes)
+           if(router.pathname === "/"){
+               router.push("/admin/dashboard")
+           }
+        }
+        else {
+            setNavigation(navRoutes)
         }
     }, [])
-   
 
     return (
 
 
         <>
-
             {minimize ? (
                 <>
                 </>
             ) : (
 
-                <div className='flex flex-col  sticky  bg-purple   top-0 z-50 mb-5'>
+                <div className='flex flex-col  sticky  bg-purple   top-0 z-50 '>
                     <div className='h-1/6 w-3/5 relative drop-shadow-lg  flex flex-col justify-between max-w-lg'>
 
 

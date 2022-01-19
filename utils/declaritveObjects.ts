@@ -57,12 +57,7 @@ export const uploadExperience: IDisplayObject = {
         required:false,
         date:true
     },
-    current:{
-        name:"current",
-        displayName:"Håller på just nu",
-        required:false,
-       
-    },
+ 
    
   
 }

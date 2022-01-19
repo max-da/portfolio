@@ -9,73 +9,72 @@ import axios from 'axios'
 import useAuth from '../../utils/useAuth'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
+import { connect } from '../../utils/dbConnect'
+import { InferGetStaticPropsType } from 'next'
+import { json } from 'node:stream/consumers'
+import { InferGetServerSidePropsType,GetStaticProps} from 'next'
 
 interface IProjectsArr {
     projects: Iprojects[]
 }
 
-const Projects = (props: IProjectsArr) => {
-    let root: HTMLElement | null = null
-    const { ref, inView, entry } = useInView({
-        root: root,
-        threshold: 0,
-      });
-    const { projects } = props
-    const isLoggedIn = useAuth()
-    const [arrowIndex, setArrowIndex] = useState(0)
-    const [indicies, setIndicies] = useState(projects.length)
+const Projects = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>) => {
+
     console.log(projects)
+    const isLoggedIn = useAuth()
+    const parsed:Iprojects[] = JSON.parse(projects)
 
-    useEffect(()=>{
-        root=   document.getElementById("viewPortRoot");
-    },[])
-    let displayProjects = projects.map((project, i) => {
-     
-       
+    let displayProjects = parsed.map((project) => {
 
+        console.log("HÄR")
+        console.log(Array.isArray(project))
+        console.log(project)
         return (
-            <Project focus={false} project={project}/>
+            <Project key={project._id} focus={false} project={project} />
 
 
         )
     })
 
- 
     return (
-      
-      
-            <div className=" flex  flex-col justify-center items-center  " >
-                
-            {displayProjects}
 
-            {isLoggedIn?(
+
+        <div className=" flex  flex-col justify-center items-center w-full  " >
+
+
+
+            {isLoggedIn.isLoggedIn ? (
                 <Link href="/admin/upload/project">
-                    <button>
+                    <button className="text-2xl hover:bg-red-500 rounded-lg border mt-5 p-3 bg-purple text-bgWhite drop-shadow-xl">
                         Ladda upp nytt projekt
                     </button>
                 </Link>
-            ):(null)}
-  
+            ) : (null)}
+            {displayProjects}
 
 
-            </div>
-     
+        </div>
+
     )
 
 
 
 }
-export async function getServerSideProps() {
-    const res = await fetch("http://localhost:3000/api/content/projects")
-    const projects: Iprojects = await res.json()
+export async function getStaticProps() {
 
-    // return props
+
+    const { Project } = await connect();
+
+    let temp: Iprojects[] = await Project.find({});
+    let projects = JSON.stringify(temp)
+
     return {
-        props: { projects },
-   
-        
+        props: {
+            projects
+        }
     }
-    
-  }
+
+}
 
 export default Projects
+

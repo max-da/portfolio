@@ -1,10 +1,12 @@
 import Router, { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react"
 import { IRoute } from "../utils/interfaces";
+import useOverlay from "../utils/overlayContext";
 import useAuth from "../utils/useAuth"
-import { AdminNav } from "./AdminNav";
+
 import { DynamicNav } from "./DynamicNav";
-import { Navbar } from "./Navbar";
+
+
 
 interface Iprops {
     children: ReactNode
@@ -16,7 +18,8 @@ const Layout2 = (props: Iprops) => {
     const [onHome, setOnHome] = useState(false)
     const [route, setRoute] = useState<IRoute>({ path: router.pathname })
     const [minimize, setMinimize] = useState(false)
-
+    const [overlay, setOverlay] = useState(false)
+    const { toggle } = useOverlay()
     useEffect(() => {
         console.log("JNASKDN")
         if (router.pathname === "/") {
@@ -25,32 +28,27 @@ const Layout2 = (props: Iprops) => {
             setOnHome(false)
         }
         console.log(router.pathname)
-        if(router.pathname === "/projects/[id]"){
-  
-             console.log("TRUUUUUUUUUUUUUUUU")
-         }
-         else{
-             setMinimize(false)
-         } 
+        if (router.pathname === "/projects/[id]") {
+
+            console.log("TRUUUUUUUUUUUUUUUU")
+        }
+        else {
+            setMinimize(false)
+        }
         setRoute({ path: router.pathname })
     }, [router.pathname])
     return (
-        <div className="flex min-h-screen justify-center ">
-       
-            <div className="md:max-w-screen-lg min-h-screen w-full  rounded border border-purple bg-bgWhite drop-shadow-xl ">
-                <DynamicNav minimize={minimize} route={route.path} />
-                {isLoggedIn ? (
-                    <div >
+        <>
 
-                    </div>
-                ) : (
-                    <div >
+            <div className="flex min-h-screen justify-center relative ">
 
-                    </div>
-                )}
-                {props.children}
+                <div className="md:max-w-screen-lg min-h-screen w-full  rounded  bg-bgWhite drop-shadow-xl ">
+                    <DynamicNav minimize={minimize} route={route.path} />
+                    {props.children}
+                </div>
+
             </div>
-        </div>
+        </>
     )
 }
 export default Layout2
