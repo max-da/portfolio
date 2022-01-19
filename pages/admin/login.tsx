@@ -1,8 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { NextPage } from "next";
 import { ChangeEvent, useState } from "react"
-import { Navbar } from "../../components/Navbar";
-import {BaseModal} from "../../components/modals/BaseModal";
+import { BaseModal } from "../../components/modals/BaseModal";
 
 interface Iuser {
   username: string;
@@ -19,7 +18,7 @@ interface Ierrors extends Imodal {
 
 export const Login = (props: Iprops) => {
   const router = useRouter()
-  const [errors, setErrors] = useState<Ierrors>({error:false,title:"",message:"", cancel:()=>{setErrors({...errors, error:false})}})
+  const [errors, setErrors] = useState<Ierrors>({ error: false, title: "", message: "", cancel: () => { setErrors({ ...errors, error: false }) } })
   const [form, setForm] = useState<Iuser>({
     username: "",
     password: ""
@@ -40,9 +39,9 @@ export const Login = (props: Iprops) => {
         console.log("HÖRRI")
         setErrors({
           ...errors,
-          title:"Error",
-          message:err?.response?.data,
-   
+          title: "Error",
+          message: err?.response?.data,
+
         })
 
         console.log(err.response)
@@ -54,29 +53,35 @@ export const Login = (props: Iprops) => {
       .then((res) => {
         console.log(res)
       })
-      .catch((err)=> {
+      .catch((err) => {
         console.log(err)
       })
   }
   return (
     <>
-      <Navbar />
-      {errors.title? (
-        <BaseModal title={errors.title} message={errors.message} cancel={errors.cancel}/>
-      ):null}
-      {props.isLoggedIn ? (
-        <div>
-          <h1>Du är redan inloggad.</h1>
-          <button onClick={logOut}>Loggaut? </button>
-        </div>
-      ) : (
-        <div className="bg-emerald-500 border">
-          <input name="username" type="text" onChange={onChange}></input>
-          <input name="password" type="text" onChange={onChange}></input>
-          <button onClick={submit}>lgoin</button>
-        </div>
-      )}
+      <div className="flex flex-col relative items-center mt-24 max-h-screen justify-center  w-full " >
 
+        {errors.title ? (
+          <BaseModal title={errors.title} message={errors.message} cancel={errors.cancel} />
+        ) : null}
+        {props.isLoggedIn ? (
+          <div>
+            <h1>Du är redan inloggad.</h1>
+            <button onClick={logOut}>Loggaut? </button>
+          </div>
+        ) : (
+          <div className="border flex flex-col">
+            <input name="username" className="text-2xl border border-purple"  type="text" onChange={onChange}></input>
+            <input name="password" className="text-2xl border border-purple" type="password" onChange={onChange}></input>
+     
+
+            <button type='button' className="text-1xl hover:bg-red-500  p-3 bg-purple text-bgWhite drop-shadow-xl"
+              onClick={submit}>
+              Logga in
+            </button>
+          </div>
+        )}
+      </div>
     </>
   )
 }
@@ -94,7 +99,7 @@ export const getServerSideProps = withIronSessionSsr(
     const user = req.session.user;
     console.log(req.session.user)
     const isLoggedIn = user === true
-  
+
 
     return {
       props: {

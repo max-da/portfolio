@@ -9,10 +9,8 @@ interface Iprops {
 export const ConfirmModal = (props: Iprops) => {
     return (
         <>
-            <Overlay onClick={props.cancel}>
 
-            </Overlay>
-            <div className="w-2/3 bg-white z-20 absolute top-1/4 flex flex-col items-center">
+            <div className="w-4/5 bg-bgWhite absolute rounded border border-purple z-50  flex flex-col items-center">
                 <h1 >
                     <AlertTriangle className="" />
                 </h1>

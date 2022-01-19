@@ -7,7 +7,7 @@ export interface IImage{
 export interface Imodal {
     cancel: () => void;
     title:string;
-    message: string;
+    message?: string;
 }
 export interface Ierror{
     statusCode: number;
@@ -25,7 +25,9 @@ export interface Iprojects {
     images:IImage[]
   
 }
-
+export interface IExperience extends IFormExp{
+    _id:string
+}
 export interface IRoute{
 
     path:string;
@@ -44,8 +46,8 @@ export interface IFormExp{
     name:string;
     description:string;
     startDate:Date;
-    endDate?:Date;
-    current?:boolean;
+    endDate?:Date | null;
+  
 
 }
 export interface IDisplayObject {

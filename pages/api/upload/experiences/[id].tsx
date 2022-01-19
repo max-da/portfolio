@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { connect } from "../../utils/dbConnect";
+import { connect } from "../../../../utils/dbConnect";
 import nc from "next-connect";
-import { IFormProject, Iprojects } from "../../utils/interfaces";
+import { IFormExp, IFormProject, Iprojects } from "../../../../utils/interfaces";
 
 const handler = nc<NextApiRequest, NextApiResponse>({
     onError: (err, req, res, next) => {
@@ -12,22 +12,14 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         res.status(404).end("Page is not found");
     },
 })
-    .get(async (req, res) => {
-        const projectId = req.query.id
-
-        const { Project } = await connect();
-
-        res.json(await Project.find({ _id: projectId }));
-
-    })
     .put(async (req, res) => {
-        const projectId = req.query.id
+        const experienceId = req.query.id
 
         try {
             console.log("AOSJLKDAS")
-            const form: IFormProject = req.body
-            const { Project } = await connect();
-            await Project.findOneAndUpdate({ id: projectId }, form)
+            const form: IFormExp = req.body
+            const { Experience } = await connect();
+            await Experience.findOneAndUpdate({ id: experienceId }, form)
 
             res.status(200).json("nice")
         } catch (error) {
@@ -35,11 +27,11 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         }
     })
     .delete(async (req, res) => {
-
+        console.log("KLASDNSAKLJNDAJK")
         try {
-            const projectId = req.query.id
-            const { Project } = await connect();
-            await Project.deleteOne({ id: projectId })
+            const experienceId = req.query.id
+            const { Experience } = await connect();
+            await Experience.deleteOne({ id: experienceId })
             
             res.status(200).json("nice")
         } catch (error) {

@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
-import { IImage } from "../utils/interfaces";
+import { IImage ,Iprojects} from "../utils/interfaces";
 import Image from 'next/image'
 import { ArrowDown, ArrowLeft, ArrowRight } from "react-feather";
 
 interface Iprops {
-    images: IImage[];
+    project: IImage[];
     focus: boolean;
 }
 export const ImageViewer = (props: Iprops) => {
-    const [images, setImages] = useState<IImage[]>(props.images)
+    const [images, setImages] = useState<IImage[]>(props.project)
     const [imageIndex, setImageIndex] = useState(0)
     const [focus, setFocus] = useState(props.focus)
     const [clicked, setClicked] = useState(false)
     const [imageSize, setImageSize] = useState({
         height: 700, width: 700
     })
-    console.log(images)
-    let src = "/uploads/" + images[imageIndex].image.path
+    let x  = props.project[0]
 
-    console.log(props.images)
+   let src = "/uploads/" + props.project[imageIndex].image.path
+
 
   
 

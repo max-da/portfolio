@@ -1,9 +1,11 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { connect } from "../../../utils/dbConnect";
+// pages/api/login.ts
+
+import { withIronSessionApiRoute } from "iron-session/next";
 import multer from "multer";
 import nc from "next-connect";
-import { IImage } from "../../../utils/interfaces";
-
+import { connect } from "../../../../utils/dbConnect";
+import { IImage } from "../../../../utils/interfaces";
+import { sessionOptions } from "../../../../utils/session";
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -11,37 +13,29 @@ const upload = multer({
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 });
-
-const handler = nc<NextApiRequest, NextApiResponse>({
-  onError: (err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).end("Something broke!");
-  },
-  onNoMatch: (req, res, next) => {
-    res.status(404).end("Page is not found");
-  },
-})
-  .get(async (req, res) => {
-
-    const { Project } = await connect();
-
-    res.json(await Project.find({}));
-  })
-  .post(upload.array("image"), async (req, res) => {
-    const { name, techStack, description, createdDate, gitLink, liveLink } =
+export default withIronSessionApiRoute(
+  nc().post(upload.array("image"),async (req,res)=> {
+    if (!req.session.user) {
+      res.status(403).json("Denna funktionalitet är endast för administratörer.");
+    } else {
+      const { name, techStack, description, createdDate, gitLink, liveLink } =
       req.body;
     try {
+      
+      console.log(req.headers)
       let images: IImage[] = [];
 
       if (req.files) {
+      
         for (const [key, value] of Object.entries(req.files)) {
           let image = {
             image: { path: value.filename },
           };
           images.push(image);
         }
-      }else{
-          res.status(500).json("Err")
+      }
+      if(req.files?.length === 0){
+        res.status(500).json("err")
       }
 
       const { Project } = await connect();
@@ -54,14 +48,18 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         liveLink: liveLink,
         images: images,
       }).save();
+      res.status(200).json("BRA")
     } catch (err) {
       console.log(err);
-      res.status(400).json(err);
+      res
     }
-  });
-export default handler;
+  }}),
+sessionOptions);
+
 export const config = {
   api: {
     bodyParser: false, // Disallow body parsing, consume as stream
   },
 };
+
+

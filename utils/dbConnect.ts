@@ -30,7 +30,7 @@ export const connect = async () => {
     description: {type:String, required:true},
     startDate:{type:Date, required:true},
     endDate:Date,
-    current:Boolean
+  
   
   
   });

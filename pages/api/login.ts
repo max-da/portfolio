@@ -24,7 +24,7 @@ export default withIronSessionApiRoute(
       let admin = await Admins.findOne({ username: username });
       isValid = await bcrypt.compare(password, admin.password);
     } catch (err) {
-      errorMessage = ({statusCode:403, errorMessage:"Bara admins"})
+      errorMessage = ({statusCode:403, errorMessage:"Denna sida är enbart för administratörer."})
     }
 
     if (isValid) {
