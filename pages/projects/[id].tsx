@@ -18,7 +18,10 @@ const FocusView = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>)
         <>
           
            
+            <div className='flex justify-center'>
             <Project project={project} focus={true}></Project> 
+            </div>
+
       
 
 

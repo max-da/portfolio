@@ -45,7 +45,7 @@ export interface IFormProject {
 export interface IFormExp{
     name:string;
     description:string;
-    startDate:Date;
+    startDate:Date | null;
     endDate?:Date | null;
   
 

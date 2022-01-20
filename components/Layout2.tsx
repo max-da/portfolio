@@ -18,8 +18,7 @@ const Layout2 = (props: Iprops) => {
     const [onHome, setOnHome] = useState(false)
     const [route, setRoute] = useState<IRoute>({ path: router.pathname })
     const [minimize, setMinimize] = useState(false)
-    const [overlay, setOverlay] = useState(false)
-    const { toggle } = useOverlay()
+
     useEffect(() => {
         console.log("JNASKDN")
         if (router.pathname === "/") {
@@ -29,7 +28,7 @@ const Layout2 = (props: Iprops) => {
         }
         console.log(router.pathname)
         if (router.pathname === "/projects/[id]") {
-
+            
             console.log("TRUUUUUUUUUUUUUUUU")
         }
         else {
@@ -42,7 +41,7 @@ const Layout2 = (props: Iprops) => {
 
             <div className="flex min-h-screen justify-center relative ">
 
-                <div className="md:max-w-screen-lg min-h-screen w-full  rounded  bg-bgWhite drop-shadow-xl ">
+                <div className="md:max-w-screen-lg min-h-screen w-full  rounded  bg-shade drop-shadow-xl ">
                     <DynamicNav minimize={minimize} route={route.path} />
                     {props.children}
                 </div>

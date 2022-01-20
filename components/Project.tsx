@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import useAuth from "../utils/useAuth";
 import Image from "next/image";
 import { BaseModal } from "./modals/BaseModal";
+import { animated, useTransition, config } from "react-spring";
 
 interface Iprops {
     project: Iprojects;
@@ -20,8 +21,9 @@ interface Iprops {
 
 export const Project = (props: Iprops) => {
     const { project, focus } = props
-    const chosenProject = { ...project[0] }
 
+    const chosenProject: Iprojects = { ...project[0] }
+    console.log(chosenProject)
     const initialValue: IFormProject = {
         name: chosenProject.name,
         techStack: chosenProject.techStack,
@@ -34,7 +36,7 @@ export const Project = (props: Iprops) => {
     const [form, setForm] = useState<IFormProject>(initialValue)
     const [editMode, setEditMode] = useState(false);
     const [confirmModal, setConfirmModal] = useState(false)
-
+    const [goToSpecific, setGoToSpecific] = useState(false)
     const [err, setErr] = useState(false)
 
     const router = useRouter()
@@ -49,9 +51,7 @@ export const Project = (props: Iprops) => {
         console.log(form)
 
     }
-    useEffect(() => {
 
-    }, [])
 
     const abortChanges = () => {
         setEditMode(false)
@@ -60,13 +60,13 @@ export const Project = (props: Iprops) => {
 
     const saveChanges = async () => {
         if (form != initialValue) {
-            axios.put("/api/upload/projects/" + project._id, form)
+            await axios.put("/api/upload/projects/" + chosenProject._id, form)
                 .then((res) => {
                     console.log(res)
                     setEditMode(false)
                 })
                 .catch((err: AxiosError) => {
-
+                    console.log(err)
                     setErr(true)
                 })
 
@@ -78,36 +78,44 @@ export const Project = (props: Iprops) => {
     }
     const deletePost = async () => {
         console.log("HEJ")
-        axios.delete("/api/" + project._id)
+        axios.delete("/api/upload/projects/" + project[0]._id)
             .then((res) => {
                 console.log(res)
                 if (res.status === 200) {
-                    router.push("/project[0]s/all")
+                    router.push("/projects/all")
                 }
             })
     }
+
+    const transition = useTransition(!goToSpecific, {
+        from: { opacity: 1 },
+        enter: { opacity: 1, y: 0 },
+        leave: { opacity: 0, y: 100, height: 1000 },
+        config:{duration:600}
+        })
+
+
+
+
 
     return (
 
         <>
 
             {props.focus ? (
-                <div className="w-full flex relative justify-center">
-                    {confirmModal ? (
-                        <ConfirmModal confirm={deletePost} cancel={() => setConfirmModal(false)} message="Är du säker på att du vill ta bort detta projekt?" />
+                <>
+                    <div className=" w-full max-w-3xl flex-col items-center flex justify-center">
+                        {confirmModal ? (
+                            <ConfirmModal confirm={deletePost} cancel={() => setConfirmModal(false)} message="Är du säker på att du vill ta bort detta projekt?" />
 
-                    ) : null}
+                        ) : null}
 
-                    {err ? (
-                        <BaseModal cancel={() => setErr(false)} title="Hoppsan!" message="Detta attribut kan inte lämnas tomt." />
-                    ) : null}
-                    <div className={` max-w-screen-sm flex-col  rounded  flex justify-between items-center   w-full  m-5 drop-shadow-xl  `}>
+                        {err ? (
+                            <BaseModal cancel={() => setErr(false)} title="Hoppsan!" message="Ett obligatoriskt fält har lämnats tomt." />
+                        ) : null}
+                        <ImageViewer project={chosenProject.images} focus={props.focus} />
 
-
-                        <div className="block w-full">
-                            <ImageViewer project={chosenProject.images} focus={props.focus} />
-                        </div>
-                        <div className="border border-purple w-full drop-shadow-2xl rounded">
+                        <div className="border border-purple w-full drop-shadow-2xl rounded ">
                             <div className="flex justify-center text-2xl text-bgWhite bg-purple w-full    ">
                                 <h2 className="text-2xl break-all">
                                     <EditField name="name" content={form.name} editMode={editMode} onChange={onChange} />
@@ -182,21 +190,23 @@ export const Project = (props: Iprops) => {
                                 )}
                             </div>
                         </div>
+
+
+
                     </div>
-                </div>
 
 
 
 
-
+                </>
             ) : (
+                <>
 
-                <div key={project._id} onClick={() => {
-                    router.push(`/projects/${encodeURIComponent(project._id)}`)
-                }} className="
+                    {transition((style, item) => item ? <animated.div style={style}>
+                        <div key={project._id} onClick={() => { setGoToSpecific(true),   router.push(`/projects/${encodeURIComponent(project._id)}`)}} className="
                     h-36
                     overflow-clip
-                 
+                    hover:cursor-pointer
                     flex
                     justify-center
                     items-center
@@ -208,20 +218,25 @@ export const Project = (props: Iprops) => {
                     ">
 
 
-                    <img className="w-full" src={"/uploads/" + project.images[0].image.path} />
 
-                    <div className="h-screen w-screen bg-black opacity-50 absolute">
-
-                    </div>
-
-                    <h1 className="text-4xl roboto absolute text-bgWhite">
-                        {project.name}
-                    </h1>
+                            <img className="w-full" src={"/uploads/" + project.images[0]?.image.path} />
 
 
+                            <div className="h-screen w-screen bg-black opacity-50 absolute">
 
-                </div>
+                            </div>
 
+                            <h1 className="text-4xl roboto absolute text-bgWhite">
+                                {project.name}
+                            </h1>
+
+
+
+                        </div>
+                    </animated.div> : "")}
+
+
+                </>
             )}
         </>
     )

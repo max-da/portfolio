@@ -17,7 +17,8 @@ module.exports = {
       colors:{
        "bgWhite": "#FFFCF2",
        "aside":"#A57F60",
-       "purple":"#290043"
+       "purple":"#290043",
+       "shade":"hsla(277, 100%, 13%, 0.1)"
       }
     }
   },

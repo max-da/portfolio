@@ -12,6 +12,7 @@ import { Experience } from '../../../components/Experience'
 import { connect } from '../../../utils/dbConnect'
 import { InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
+import { animated, useTrail } from 'react-spring'
 
 /* interface Iprops {
     experiences: IFormExp[]
@@ -23,21 +24,47 @@ const allExp = ({ experiences }: InferGetStaticPropsType<typeof getStaticProps>)
 
 
     const isLoggedIn = useAuth()
-    const parsed = JSON.parse(experiences)
+    const parsed: IExperience[] = JSON.parse(experiences)
 
+    const [loading, setLoading] = useState(true)
 
+    useEffect(() => {
+        console.log(parsed)
+        if (parsed.length > 0) {
 
-    let displayExperiences: IExperience[] = parsed.map((experience: IExperience, i: number) => {
+            parsed.sort((a: IExperience, b: IExperience) => (a.startDate! < b.startDate!) ? 1 : -1)
 
+        }
+        setLoading(false)
+    }, [parsed])
+
+    const Trail = () => {
+        const [loaded, setLoaded] = useState(false)
+        useEffect(() => {
+            setLoaded(true)
+        }, [])
+        const trail = useTrail(parsed.length, {
+            opacity: !loaded ? 0 : 1,
+            transform: !loaded ? 'scale(0.3)' : 'scale(1)',
+            delay: 250,
+            config: {
+                duration: 300
+            }
+
+        });
 
 
         return (
 
-            <Experience experience={experience} />
+            <div className=" " >
+                {trail.map((animation, i) => <animated.div key={i} style={animation} >
+                    <Experience key={parsed[i]._id} experience={parsed[i]} />
 
+                </animated.div>)}
 
-        )
-    })
+            </div>
+        );
+    };
 
 
     return (
@@ -45,19 +72,24 @@ const allExp = ({ experiences }: InferGetStaticPropsType<typeof getStaticProps>)
 
         <div className="flex justify-center " >
             <div className='w-4/5 flex max-w-md  flex-col align-center justify-center'>
-            {isLoggedIn.isLoggedIn ? (
-                <Link href="/admin/upload/experience">
-                    <button className="text-2xl hover:bg-red-500 rounded-lg border mt-5 p-3 bg-purple text-bgWhite drop-shadow-xl">
-                        Ladda upp ny erfarenhet
-                    </button>
-                </Link>
-            ) : (null)}
-                {displayExperiences}
-                    
 
-                
+
+                {/* 
+                {parsed.map((experience: IExperience, i: number) => (<Experience key={experience._id} experience={experience} />))}
+ */}
+                {loading ? (
+                    <span>loading</span>
+                ) : (
+                    <Trail />
+                )}
+                {isLoggedIn.isLoggedIn ? (
+                    <div className='absolute'>
+                        
+                    </div>
+                ) : (null)}
+
             </div>
-       
+
 
 
         </div>

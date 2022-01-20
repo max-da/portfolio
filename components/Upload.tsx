@@ -54,7 +54,7 @@ export const Upload = (props: Iprops) => {
         initial = {
             name: "",
             description: "",
-            startDate: new Date,
+            startDate: null,
             endDate: null,
 
         }
@@ -63,10 +63,12 @@ export const Upload = (props: Iprops) => {
 
     const [form, setForm] = useState<IFormExp | IFormProject>(initial)
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log(form)
         if (e.currentTarget.files) {
             setFiles(e.currentTarget.files)
         }
-        if (e.target.value) {
+
+        if (e.target.name != "image") {
 
             let name = e.target.name
             setForm({ ...form, [name]: e.target.value });
@@ -98,8 +100,7 @@ export const Upload = (props: Iprops) => {
             console.log(value)
         }
         if (files) {
-            console.log("HÄR")
-            console.log(files)
+         
             for (let i = 0; i < files.length; i++) {
                 const element = files[i];
                 formData.append("image", element)
@@ -127,8 +128,8 @@ export const Upload = (props: Iprops) => {
                 console.log(res.data)
                 console.log("SUCCöpgaidnandglkököghdaladgadä'agdhagdpagdjgadogdjahbgdalkagdhgadgadbjakgdjkgdab")
                 setToggle()
-                setShowModal(true)
-                return setModal(modal => ({ ...modal, title: "Uppladdning lyckades!", message: "" }))
+             
+                return setModal(modal => ({ ...modal, title: "Succé!", message: "Uppladdnig lyckades." }))
 
             })
             .catch((err: AxiosError) => {
@@ -136,22 +137,27 @@ export const Upload = (props: Iprops) => {
                 console.log(err)
                 console.log(err.message)
                 setToggle()
-                setShowModal(true)
-                return setModal(modal => ({ ...modal, title: "Någonting gick fel", message: "Fyll i samtliga fält" }))
+             
+                return setModal(modal => ({ ...modal, title: "Någonting gick fel", message: "Vänligen fyll i rödmarkerade fält" }))
             })
 
 
     }
 
-
+    useEffect(()=>{
+        if(modal.title){
+            setShowModal(true)
+        }
+    },[modal])
     return (
         <>
-            {isLoggedIn.isLoggedIn ? (
+       
 
-                <div className="flex flex-col relative items-center justify-start  w-full max-h-screen " >
+                <div className="flex flex-col  items-center justify-start  w-full max-h-screen " >
                     {showModal ? (
-                        <BaseModal title={modal.title} cancel={modal.cancel} />
+                        <BaseModal title={modal.title} message={modal.message} cancel={modal.cancel} />
                     ) : null}
+               
                     <div className='flex-col max-w-md flex justify-center items-center w-4/5 mt-24 border border-red-500 drop-shadow-2xl rounded '>
                         <form className='flex-col flex justify-center  w-full' encType='multipart/form-data' >
                             {Object.entries(projectInfo).map(([key, value]) => {
@@ -200,14 +206,7 @@ export const Upload = (props: Iprops) => {
 
 
                 </div>
-            ) : (
-                <>
-                  <h1>Denna sida är endast för administratörer</h1>
-                <Link href="/">
-                    <a>Ta mig till startsidan</a>
-                </Link>
-                </>
-            )}
+      
         </>
     )
 }
