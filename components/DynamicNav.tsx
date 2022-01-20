@@ -110,31 +110,18 @@ export const DynamicNav = (props: Iprops) => {
                 setIndex(i)
             }
         }
+        if(props.route.includes("projects")){
+            setIndex(1)
+        }
 
 
     }, [props.route])
 
-    useEffect(() => {
-        setMinimize(props.minimize)
-    }, [props.minimize])
+
 
     useEffect(() => {
 
-        if (isLoggedIn.isLoggedIn) {
-            console.log(isLoggedIn)
-            console.log("MUTATA")
-            console.log(mutNavRoutes)
-            mutNavRoutes[0].name = "admin"
-            mutNavRoutes[0].path = "/admin/dashboard"
-            console.log(mutNavRoutes)
-           setNavigation(mutNavRoutes)
-           if(router.pathname === "/"){
-               router.push("/admin/dashboard")
-           }
-        }
-        else {
-            setNavigation(navRoutes)
-        }
+      setNavigation(navRoutes)
     }, [])
 
     return (
@@ -160,12 +147,12 @@ export const DynamicNav = (props: Iprops) => {
 
                                 <div className='h-5'>
                                     {transition((styleProps, item) =>
-                                        item ? <animated.h1 style={styleProps}>
+                                        item ? <animated.div style={styleProps}>
                                             <h1 className='text-5xl text-white font-roboto italic hover:cursor-pointer select-none drop-shadow-xl' onClick={incrementIndex} >
 
                                                 {item.name}
                                             </h1>
-                                        </animated.h1> : ""
+                                        </animated.div> : ""
                                     )}
 
                                 </div>

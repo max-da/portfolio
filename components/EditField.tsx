@@ -26,7 +26,7 @@ export const EditField = (props: Iprops) => {
 
                         </textarea>
                     ) : (
-                   
+                        
                         <input name={props.name} placeholder={props.name} className="underline bg-transparent " type={`${props.date ? "Date" : "text"}`} defaultValue={props.content}  onChange={onChange} />
 
                     
@@ -34,7 +34,7 @@ export const EditField = (props: Iprops) => {
                 </>
             ) : (
               <>
-       
+                
                 {props.content}
           
                 

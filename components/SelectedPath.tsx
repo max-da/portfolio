@@ -26,6 +26,7 @@ const SelectedPath = (props: Iprops) => {
     config: config.stiff,
   })
   useEffect(()=>{
+    console.log(props.routes)
     setNavigation(props.routes)
   },[props.routes])
   useEffect(() => {
@@ -38,15 +39,7 @@ const SelectedPath = (props: Iprops) => {
     }
   }, [props.current])
 
-/*   useEffect(() => {
 
-    if (isLoggedIn) {
-      setNavigation(adminRoute)
-    }
-    else {
-      setNavigation(navRoutes)
-    }
-  }, [isLoggedIn.isLoggedIn]) */
   const navigate = () => {
 
     for (let i = 0; i < navigation.length; i++) {
@@ -62,7 +55,7 @@ const SelectedPath = (props: Iprops) => {
     <>
 
 
-      <div className="  h-full w-full mt-3 bg-purple" onClick={() => navigate()}>
+      <div className="  h-full w-full mt-3 bg-purple hover:cursor-pointer" onClick={() => navigate()}>
         {transition((styleProps, item) =>
           item ?
             <animated.div style={styleProps} className="w-full h-full bg-red-500 " />

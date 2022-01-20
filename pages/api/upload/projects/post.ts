@@ -22,9 +22,9 @@ export default withIronSessionApiRoute(
       req.body;
     try {
       
-      console.log(req.headers)
+  
       let images: IImage[] = [];
-
+  
       if (req.files) {
       
         for (const [key, value] of Object.entries(req.files)) {
@@ -34,8 +34,8 @@ export default withIronSessionApiRoute(
           images.push(image);
         }
       }
-      if(req.files?.length === 0){
-        res.status(500).json("err")
+      if(images.length === 0){
+        throw new Error
       }
 
       const { Project } = await connect();
@@ -50,8 +50,8 @@ export default withIronSessionApiRoute(
       }).save();
       res.status(200).json("BRA")
     } catch (err) {
-      console.log(err);
-      res
+   
+      res.status(500).json("fail:P")
     }
   }}),
 sessionOptions);
