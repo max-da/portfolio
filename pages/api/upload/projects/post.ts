@@ -6,11 +6,14 @@ import nc from "next-connect";
 import { connect } from "../../../../utils/dbConnect";
 import { IImage } from "../../../../utils/interfaces";
 import { sessionOptions } from "../../../../utils/session";
-
+const path = require("path")
 const upload = multer({
   storage: multer.diskStorage({
     destination: "./public/uploads",
-    filename: (req, file, cb) => cb(null, file.originalname),
+    filename: (req, file, cb) => {
+      let fn = file.originalname.split(path.extname(file.originalname))[0] + '-' + Date.now() + path.extname(file.originalname);
+      cb(null,  fn);
+    },
   }),
 });
 export default withIronSessionApiRoute(

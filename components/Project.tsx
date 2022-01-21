@@ -91,8 +91,8 @@ export const Project = (props: Iprops) => {
         from: { opacity: 1 },
         enter: { opacity: 1, y: 0 },
         leave: { opacity: 0, y: 100, height: 1000 },
-        config:{duration:600}
-        })
+        config: { duration: 1500 }
+    })
 
 
 
@@ -202,8 +202,8 @@ export const Project = (props: Iprops) => {
             ) : (
                 <>
 
-                    {transition((style, item) => item ? <animated.div style={style}>
-                        <div key={project._id} onClick={() => { setGoToSpecific(true),   router.push(`/projects/${encodeURIComponent(project._id)}`)}} className="
+
+                    <div key={project._id} onClick={() => { setGoToSpecific(true), router.push(`/projects/${encodeURIComponent(project._id)}`) }} className="
                     h-36
                     overflow-clip
                     hover:cursor-pointer
@@ -219,21 +219,21 @@ export const Project = (props: Iprops) => {
 
 
 
-                            <img className="w-full" src={"/uploads/" + project.images[0]?.image.path} />
+                        <img className="w-screen object-cover object-center h-full" src={"/uploads/" + project.images[0]?.image.path} />
 
 
-                            <div className="h-screen w-screen bg-black opacity-50 absolute">
-
-                            </div>
-
-                            <h1 className="text-4xl roboto absolute text-bgWhite">
-                                {project.name}
-                            </h1>
-
-
+                        <div className="h-screen w-screen bg-black opacity-50 absolute">
 
                         </div>
-                    </animated.div> : "")}
+
+                        <h1 className="text-4xl roboto absolute text-bgWhite">
+                            {project.name}
+                        </h1>
+
+
+
+                    </div>
+
 
 
                 </>

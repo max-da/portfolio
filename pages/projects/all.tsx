@@ -15,11 +15,12 @@ import { json } from 'node:stream/consumers'
 import { InferGetServerSidePropsType, GetStaticProps } from 'next'
 import { animated, useTrail } from 'react-spring'
 
+
 interface IProjectsArr {
     projects: Iprojects[]
 }
 
-const Projects = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Projects = ({ projects }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
     console.log(projects)
     const isLoggedIn = useAuth()
@@ -94,7 +95,7 @@ const Projects = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>) 
 
 
 }
-export async function getStaticProps() {
+export async function getServerSideProps() {
 
 
     const { Project } = await connect();

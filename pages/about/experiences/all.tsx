@@ -10,7 +10,7 @@ import useAuth from '../../../utils/useAuth'
 import { useInView } from 'react-intersection-observer'
 import { Experience } from '../../../components/Experience'
 import { connect } from '../../../utils/dbConnect'
-import { InferGetStaticPropsType } from 'next'
+import { InferGetServerSidePropsType, InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
 import { animated, useTrail } from 'react-spring'
 
@@ -19,7 +19,7 @@ import { animated, useTrail } from 'react-spring'
 }
  */
 
-const allExp = ({ experiences }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AllExp = ({ experiences }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
 
 
@@ -74,17 +74,19 @@ const allExp = ({ experiences }: InferGetStaticPropsType<typeof getStaticProps>)
             <div className='w-4/5 flex max-w-md  flex-col align-center justify-center'>
 
 
-                {/* 
-                {parsed.map((experience: IExperience, i: number) => (<Experience key={experience._id} experience={experience} />))}
- */}
+    
                 {loading ? (
                     <span>loading</span>
                 ) : (
                     <Trail />
                 )}
                 {isLoggedIn.isLoggedIn ? (
-                    <div className='absolute'>
-                        
+                    <div className="flex justify-center">
+                        <Link href="/admin/upload/experience">
+                            <button className="text-2xl hover:bg-red-500 rounded-lg border mt-5 p-3 bg-purple text-bgWhite drop-shadow-xl">
+                                Ladda upp ny erfarenhet
+                            </button>
+                        </Link>
                     </div>
                 ) : (null)}
 
@@ -100,7 +102,7 @@ const allExp = ({ experiences }: InferGetStaticPropsType<typeof getStaticProps>)
 
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
 
 
     const { Experience } = await connect();
@@ -112,10 +114,10 @@ export async function getStaticProps() {
     return {
         props: {
             experiences
-        }
+        },
     }
 
 }
 
 
-export default allExp
+export default AllExp

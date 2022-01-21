@@ -61,6 +61,8 @@ export const adminRoute: INavRoutes[] = [
     }
 
 ]
+type Position = React.CSSProperties['position']
+
 
 interface Iprops {
     route: string;
@@ -73,9 +75,9 @@ export const DynamicNav = (props: Iprops) => {
     const [navigation, setNavigation] = useState<INavRoutes[]>([])
     const [index, setIndex] = useState(0)
     const router = useRouter()
-
+    const absolute ="absolute"
     const transition = useTransition(navigation[index], {
-        from: { position: "absolute", opacity: 0, y: -100 },
+        from: { position: "absolute" as Position, opacity: 0, y: -100 },
         enter: { opacity: 1, y: 0 },
         leave: { opacity: 0, y: 100 },
 
@@ -145,7 +147,7 @@ export const DynamicNav = (props: Iprops) => {
 
 
 
-                                <div className='h-5'>
+                                <div className='h-5 relative'>
                                     {transition((styleProps, item) =>
                                         item ? <animated.div style={styleProps}>
                                             <h1 className='text-5xl text-white font-roboto italic hover:cursor-pointer select-none drop-shadow-xl' onClick={incrementIndex} >

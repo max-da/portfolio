@@ -33,7 +33,7 @@ export const Login = (props: Iprops) => {
       }
     })
       .then((res) => {
-        router.push("/admin/dashboard")
+        router.push("/")
       })
       .catch((err: AxiosError) => {
         console.log("HÖRRI")
@@ -67,7 +67,7 @@ export const Login = (props: Iprops) => {
         {props.isLoggedIn ? (
           <div>
             <h1>Du är redan inloggad.</h1>
-            <button onClick={logOut}>Loggaut? </button>
+            <button onClick={logOut}>Logga ut? </button>
           </div>
         ) : (
           <div className="border flex flex-col">

@@ -11,7 +11,7 @@ export const ImageViewer = (props: Iprops) => {
     const [images, setImages] = useState<IImage[]>(props.project)
     const [imageIndex, setImageIndex] = useState(0)
     const [focus, setFocus] = useState(props.focus)
-    console.log(props.project.length)
+
     const [arrows, setArrows] = useState(false)
 
 

@@ -48,7 +48,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
             return {
                 props: {
                     projects
-                }
+                },
+                revalidate:10
             }
            
         }
@@ -79,7 +80,7 @@ export const getStaticPaths = async () => {
     }))
     return {
         paths,
-        fallback: false
+        fallback: "blocking"
     }
 }
 
