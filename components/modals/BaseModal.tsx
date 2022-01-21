@@ -16,8 +16,8 @@ export const BaseModal = (props: Imodal) => {
 
                     <div className="flex w-full justify-around flex-col items-center">
                    
-                            <p>{props.message}</p>
-                    
+        
+                            <span>{props.message}</span>
             
                         <button className="rounded text-1xl hover:bg-red-500 bg-purple text-bgWhite w-1/5 flex justify-center items-center" onClick={props.cancel}>
                             Ok
