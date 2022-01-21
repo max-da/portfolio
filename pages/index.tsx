@@ -1,68 +1,16 @@
-import { InferGetStaticPropsType } from "next";
-import Image from "next/image";
+
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-import { connect } from "../utils/dbConnect";
-import { Iprojects } from "../utils/interfaces";
 import useAuth from "../utils/useAuth";
-import { animated, useTrail, interpolate } from "react-spring"
 
 
-const Home = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [chosenNumber, setChosenNumber] = useState(0)
-  const [chosenNumbers, setChosenNumbers] = useState([0])
-  const [loading, setLoading] = useState<null | boolean>(true)
+
+const Home = () => {
+
   const isLoggedIn = useAuth()
-  const [open, setOpen] = useState(true)
-  const [parsedProjects, setParsedProjects] = useState<Iprojects[]>([])
-  const [randomImgs, setRandomImgs] = useState<string[]>([])
-  let src = "/uploads/" + parsedProjects[chosenNumber]?.images[0].image.path
-  useEffect(() => {
-    setLoading(true)
-    const parsed = JSON.parse(projects)
-    setParsedProjects(parsed)
-    console.log(parsed)
 
+ 
 
-  }, [])
-  useEffect(() => {
-    let imgs: string[] = []
-    for (let i = 0; i < 3; i++) {
-      const random = Math.floor(Math.random() * parsedProjects.length)
-      console.log(random)
-      imgs.push("/uploads/" + parsedProjects[random]?.images[0].image.path)
-    }
-    setRandomImgs(imgs)
-    console.log(imgs)
-    console.log(randomImgs[0])
-  }, [parsedProjects])
-  useEffect(() => {
-    if (randomImgs.length > 0) {
-      setLoading(false)
-    }
-  }, [randomImgs])
-  const Trail = () => {
-    const items = [0.5, 0.3, 0.2, 0.7, 1];
-    const [on, toggle] = useState(false);
-    const trail = useTrail(3, {
-      opacity: on ? 0 : 1,
-      transform: on ? 'scale(0.3)' : 'scale(1)',
-      config: {
-        duration: 1500
-      }
-
-    });
-
-    return (
-      <div className="boxes-grid">
-        <button onClick={() => toggle(on => !on)}>Toggle</button>
-        {trail.map((animation, idx) => <animated.div key={idx} className="w-screen h-24 " style={animation} >
-          <Image src={randomImgs[idx]} layout="fill" sizes="50vw" objectFit="contain" /> {idx}
-        </animated.div>)}
-      </div>
-    );
-  };
 
   return (
     <>
@@ -109,11 +57,7 @@ const Home = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>) => {
               </div>
               <div className="w-full relative min-h-[30rem] ">
 
-                {/*  {!loading ? (
-                  <Trail />
-                ) : null} */}
-
-                <button onClick={() => { console.log(open), setOpen(open => !open) }}></button>
+   
               </div>
             </div >
           </div >
@@ -128,20 +72,6 @@ const Home = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 
 }
-export async function getStaticProps() {
 
-
-  const { Project } = await connect();
-
-  let temp: Iprojects[] = await Project.find({});
-  let projects = JSON.stringify(temp)
-
-  return {
-    props: {
-      projects
-    }
-  }
-
-}
 
 export default Home

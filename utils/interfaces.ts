@@ -61,3 +61,10 @@ export interface IDisplayObject {
     }
 }
 
+
+
+export interface INavRoutes {
+    name: string;
+    path: string;
+
+}

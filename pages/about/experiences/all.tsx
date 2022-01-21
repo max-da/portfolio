@@ -1,39 +1,24 @@
-
-
-
 import { IExperience, IFormExp, Iprojects } from '../../../utils/interfaces'
-
-import { Project } from '../../../components/Project'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import useAuth from '../../../utils/useAuth'
-import { useInView } from 'react-intersection-observer'
 import { Experience } from '../../../components/Experience'
 import { connect } from '../../../utils/dbConnect'
 import { InferGetServerSidePropsType, InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
 import { animated, useTrail } from 'react-spring'
 
-/* interface Iprops {
-    experiences: IFormExp[]
-}
- */
-
+/* SSR för att query databasen direkt utan api anrop för bättre performence */
+/* Mappar ut dem i en div för animation */
 const AllExp = ({ experiences }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-
 
 
     const isLoggedIn = useAuth()
     const parsed: IExperience[] = JSON.parse(experiences)
-
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        console.log(parsed)
         if (parsed.length > 0) {
-
             parsed.sort((a: IExperience, b: IExperience) => (a.startDate! < b.startDate!) ? 1 : -1)
-
         }
         setLoading(false)
     }, [parsed])
@@ -72,9 +57,6 @@ const AllExp = ({ experiences }: InferGetServerSidePropsType<typeof getServerSid
 
         <div className="flex justify-center " >
             <div className='w-4/5 flex max-w-md  flex-col align-center justify-center'>
-
-
-    
                 {loading ? (
                     <span>loading</span>
                 ) : (
@@ -103,14 +85,9 @@ const AllExp = ({ experiences }: InferGetServerSidePropsType<typeof getServerSid
 }
 
 export async function getServerSideProps() {
-
-
     const { Experience } = await connect();
-
     let temp = await Experience.find({});
-    console.log(temp)
     let experiences = JSON.stringify(temp)
-
     return {
         props: {
             experiences

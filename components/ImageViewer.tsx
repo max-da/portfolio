@@ -7,10 +7,12 @@ interface Iprops {
     project: IImage[];
     focus: boolean;
 }
+/* Används för att rendera projektbilder, och växla mellan dem när det finns flera */
+/* Tar emot x antal bilder, increment/decrement beroende på vilken pil man klickar på */
 export const ImageViewer = (props: Iprops) => {
     const [images, setImages] = useState<IImage[]>(props.project)
     const [imageIndex, setImageIndex] = useState(0)
-    const [focus, setFocus] = useState(props.focus)
+
 
     const [arrows, setArrows] = useState(false)
 

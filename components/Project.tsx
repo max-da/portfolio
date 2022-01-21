@@ -1,29 +1,26 @@
 import { IFormProject, Imodal, Iprojects } from "../utils/interfaces";
 import { ImageViewer } from "./ImageViewer";
 import { ArrowDownCircle, GitHub, Link as LinkIcon, ArrowUpCircle, Edit, X } from "react-feather"
-import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
 import { EditField } from "./EditField";
 import axios, { AxiosError } from "axios";
 import { ConfirmModal } from "./modals/ConfirmModal";
-
 import { useRouter } from "next/router";
 import useAuth from "../utils/useAuth";
-import Image from "next/image";
 import { BaseModal } from "./modals/BaseModal";
-import { animated, useTransition, config } from "react-spring";
+
 
 interface Iprops {
     project: Iprojects;
     focus: boolean;
 }
 
-
+/* Renderar projekt samt hanterar redigering/borttagning av dem  */
 export const Project = (props: Iprops) => {
     const { project, focus } = props
 
     const chosenProject: Iprojects = { ...project[0] }
-    console.log(chosenProject)
+
     const initialValue: IFormProject = {
         name: chosenProject.name,
         techStack: chosenProject.techStack,
@@ -36,19 +33,14 @@ export const Project = (props: Iprops) => {
     const [form, setForm] = useState<IFormProject>(initialValue)
     const [editMode, setEditMode] = useState(false);
     const [confirmModal, setConfirmModal] = useState(false)
-    const [goToSpecific, setGoToSpecific] = useState(false)
     const [err, setErr] = useState(false)
 
     const router = useRouter()
-    let date = new Date(project.createdDate)
-    let year = date.getFullYear()
-    let month = date.getMonth()
-    let day = date.getDate()
-    console.log(project.images)
+ 
+
 
     const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setForm({ ...form, [e.currentTarget.name]: e.target.value });
-        console.log(form)
 
     }
 
@@ -62,11 +54,9 @@ export const Project = (props: Iprops) => {
         if (form != initialValue) {
             await axios.put("/api/upload/projects/" + chosenProject._id, form)
                 .then((res) => {
-                    console.log(res)
                     setEditMode(false)
                 })
                 .catch((err: AxiosError) => {
-                    console.log(err)
                     setErr(true)
                 })
 
@@ -77,22 +67,18 @@ export const Project = (props: Iprops) => {
 
     }
     const deletePost = async () => {
-        console.log("HEJ")
+
         axios.delete("/api/upload/projects/" + project[0]._id)
             .then((res) => {
-                console.log(res)
-                if (res.status === 200) {
-                    router.push("/projects/all")
-                }
+
+                router.push("/projects/all")
+
+            }).catch((err) => {
+                console.log(err)
             })
     }
 
-    const transition = useTransition(!goToSpecific, {
-        from: { opacity: 1 },
-        enter: { opacity: 1, y: 0 },
-        leave: { opacity: 0, y: 100, height: 1000 },
-        config: { duration: 1500 }
-    })
+
 
 
 
@@ -102,7 +88,7 @@ export const Project = (props: Iprops) => {
 
         <>
 
-            {props.focus ? (
+            {focus ? (
                 <>
                     <div className=" w-full max-w-3xl flex-col items-center flex justify-center">
                         {confirmModal ? (
@@ -156,7 +142,7 @@ export const Project = (props: Iprops) => {
                                         </>
                                     ) : null}
                                     {project.createdDate ? (
-                                        <EditField name="createdDate" content={year + "/" + month + "/" + day} editMode={editMode} date={true} onChange={onChange} />
+                                        <EditField name="createdDate" content={new Date(form.createDate).toLocaleDateString()} editMode={editMode} date={true} onChange={onChange} />
 
                                     ) : null}
                                 </div>
@@ -203,7 +189,7 @@ export const Project = (props: Iprops) => {
                 <>
 
 
-                    <div key={project._id} onClick={() => { setGoToSpecific(true), router.push(`/projects/${encodeURIComponent(project._id)}`) }} className="
+                    <div key={project._id} onClick={() => { router.push(`/projects/${encodeURIComponent(project._id)}`) }} className="
                     h-36
                     overflow-clip
                     hover:cursor-pointer

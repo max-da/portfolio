@@ -1,11 +1,10 @@
-// pages/api/login.ts
-
 import { withIronSessionApiRoute } from "iron-session/next";
 import multer from "multer";
 import nc from "next-connect";
 import { connect } from "../../../../utils/dbConnect";
 import { IImage } from "../../../../utils/interfaces";
 import { sessionOptions } from "../../../../utils/session";
+
 const path = require("path")
 const upload = multer({
   storage: multer.diskStorage({
@@ -16,6 +15,9 @@ const upload = multer({
     },
   }),
 });
+
+/* Validerar request på samma sätt som i exp, dock med nc som handler då det gjorde det */
+/* mycket mer läsbart när man använder multer  */
 export default withIronSessionApiRoute(
   nc().post(upload.array("image"),async (req,res)=> {
     if (!req.session.user) {

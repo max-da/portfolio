@@ -4,7 +4,7 @@ import type { IronSessionOptions } from 'iron-session'
 
 
 export const sessionOptions: IronSessionOptions = {
-  password: "Vt03u5x1iqP0Z0T0QbTv9aCpTB2JCmzQasd",
+  password: process.env.IRON_SESSION as string,
   cookieName: "acack",
   // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
   cookieOptions: {

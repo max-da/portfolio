@@ -1,10 +1,9 @@
-import axios from "axios"
 import { Upload } from "../../../components/Upload"
 import { uploadExperience, uploadProject } from "../../../utils/declaritveObjects"
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../../../utils/session"
-
-const experience = (user: any) => {
+/* Kollar att användare är inloggad, ger annars 404 */
+const experience = () => {
    
     return (
         <>

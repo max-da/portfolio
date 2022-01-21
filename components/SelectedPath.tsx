@@ -2,8 +2,11 @@ import { route } from "next/dist/server/router"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { animated, config, useTransition } from "react-spring"
+import { navRoutes } from "../utils/declaritveObjects"
+import { INavRoutes } from "../utils/interfaces"
 import useAuth from "../utils/useAuth"
-import { INavRoutes, navRoutes , adminRoute} from "./DynamicNav"
+
+
 
 interface Iprops {
   name: string;
@@ -14,7 +17,6 @@ interface Iprops {
 const SelectedPath = (props: Iprops) => {
 
   const [selected, setSelected] = useState(false)
-  const isLoggedIn = useAuth()
   const router = useRouter()
   const [navigation,setNavigation] = useState<INavRoutes[]>([])
 
@@ -25,9 +27,12 @@ const SelectedPath = (props: Iprops) => {
     reverse: selected,
     config: config.stiff,
   })
+
+
   useEffect(()=>{
     console.log(props.routes)
     setNavigation(props.routes)
+
   },[props.routes])
   useEffect(() => {
     if (props.name === props.current) {

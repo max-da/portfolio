@@ -16,11 +16,10 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         const experienceId = req.query.id
 
         try {
-            console.log("AOSJLKDAS")
+    
             const form: IFormExp = req.body
             const { Experience } = await connect();
             await Experience.findOneAndUpdate({ _id: experienceId },  form,{ runValidators: true, context: 'query' })
-
             res.status(200).json("nice")
         } catch (error) {
             res.status(500).json("as")
@@ -28,7 +27,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         }
     })
     .delete(async (req, res) => {
-        console.log("KLASDNSAKLJNDAJK")
+
         try {
             const experienceId = req.query.id
             const { Experience } = await connect();

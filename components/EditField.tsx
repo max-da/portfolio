@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react"
 
+/* Edit field används för att rendera input/content beroende på "editmode" dvs om användare tryckt på edit */
 interface Iprops {
     editMode: boolean;
     content: string;

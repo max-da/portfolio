@@ -11,6 +11,10 @@ import { ConfirmModal } from "./modals/ConfirmModal";
 interface Iprops {
     experience: IExperience
 }
+
+/* Objektet för varje experience. Härifrån sköts också editing/borttagning tillsammans med editfield. */
+/* Experiences va något av en eftertanke, därav är denna och projects komponenterna ganska lika varandra */
+/* Med mer tid hade jag slagit ihop dem */
 export const Experience = (props: Iprops) => {
     const initialValue: IFormExp = {
 
@@ -61,8 +65,7 @@ export const Experience = (props: Iprops) => {
 
     }
     const deletePost = async () => {
-        console.log("HEJ")
-        console.log(props.experience._id)
+ 
         axios.delete("/api/upload/experiences/" + props.experience._id)
             .then((res) => {
                 console.log(res)

@@ -3,6 +3,10 @@ import { NextPage } from "next";
 import { ChangeEvent, useState } from "react"
 import { BaseModal } from "../../components/modals/BaseModal";
 
+import { withIronSessionSsr } from "iron-session/next";
+import { useRouter } from "next/router";
+import { sessionOptions } from "../../utils/session";
+import { Imodal } from "../../utils/interfaces";
 interface Iuser {
   username: string;
   password: string;
@@ -87,12 +91,7 @@ export const Login = (props: Iprops) => {
 }
 export default Login
 
-// pages/admin.tsx
 
-import { withIronSessionSsr } from "iron-session/next";
-import { useRouter } from "next/router";
-import { sessionOptions } from "../../utils/session";
-import { Imodal } from "../../utils/interfaces";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {

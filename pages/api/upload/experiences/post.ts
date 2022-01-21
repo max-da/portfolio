@@ -5,9 +5,9 @@ import { connect } from "../../../../utils/dbConnect";
 import { sessionOptions } from "../../../../utils/session";
 
 export default withIronSessionApiRoute(async function post(req, res) {
-  // get user from database then:
 
-  console.log(req.session.user);
+  /* Kollar att request skickas med giltig inloggnings cookie, laddar sedan upp / kastar error */
+
   if (!req.session.user) {
     res.status(403).json("Denna funktionalitet är endast för administratörer.");
   } else {
@@ -22,7 +22,7 @@ export default withIronSessionApiRoute(async function post(req, res) {
         endDate: endDate,
         current: current,
       }).save();
-      res.status(200).json("BRA");
+      res.status(200).json("Success");
     } catch (err) {
       console.log(err);
       res.status(400).json(err);

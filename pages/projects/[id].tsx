@@ -1,12 +1,6 @@
 import type { GetServerSideProps, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
-import Link from 'next/link'
-import { useEffect } from 'react'
-
 import { Iprojects } from '../../utils/interfaces'
-import { ImageViewer } from '../../components/ImageViewer'
 import { Project } from '../../components/Project'
-import { useRouter } from 'next/router'
-import axios from 'axios'
 import { connect } from '../../utils/dbConnect'
 
 
@@ -17,16 +11,11 @@ const FocusView = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>)
     return (
         <>
           
-           
             <div className='flex justify-center'>
             <Project project={project} focus={true}></Project> 
             </div>
 
-      
 
-
-
-          
         </>
     )
 
@@ -88,19 +77,3 @@ export const getStaticPaths = async () => {
 export default FocusView
 
 
-
-/* 
-export const getStaticPaths = async () => {
-    const { Project } = await connect();
-    let x = await Project.find({});
-    const res = await fetch("http://localhost:3000/api/content/projects")
-    const projects: Iprojects[] = await res.json()
-    const paths = projects.map((project: Iprojects) => ({
-        params: { id: `${project._id}` },
-    }))
-    return {
-        paths,
-        fallback: false
-    }
-}
- */

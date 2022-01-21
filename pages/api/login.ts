@@ -6,10 +6,11 @@ import { connect } from "../../utils/dbConnect";
 import { Ierror } from "../../utils/interfaces";
 import { sessionOptions } from "../../utils/session";
 
+
+/* Jämför input med krypterade lösen i databas */
 export default withIronSessionApiRoute(
   
   async function loginRoute(req, res) {
-    // get user from database then:
     let errorMessage:Ierror = {
       statusCode:401,
       errorMessage:"Fel lösenord"

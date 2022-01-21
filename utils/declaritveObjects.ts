@@ -1,4 +1,5 @@
-import { IDisplayObject } from "./interfaces";
+
+import { IDisplayObject, INavRoutes } from "./interfaces";
 
 export const uploadProject: IDisplayObject = {
     name:{
@@ -61,3 +62,23 @@ export const uploadExperience: IDisplayObject = {
    
   
 }
+
+export const navRoutes: INavRoutes[] = [
+    {
+        name: "dahlbom",
+        path: "/"
+    },
+    {
+        name: "projects",
+        path: "/projects/all"
+    },
+    {
+        name: "experience",
+        path: "/about/experiences/all"
+    },
+    {
+        name: "contact",
+        path: "/about/contact"
+    }
+
+]

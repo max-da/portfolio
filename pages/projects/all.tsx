@@ -1,42 +1,22 @@
-
-
-
 import { IExperience, Iprojects } from '../../utils/interfaces'
-
 import { Project } from '../../components/Project'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import useAuth from '../../utils/useAuth'
-import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
 import { connect } from '../../utils/dbConnect'
-import { InferGetStaticPropsType } from 'next'
-import { json } from 'node:stream/consumers'
 import { InferGetServerSidePropsType, GetStaticProps } from 'next'
 import { animated, useTrail } from 'react-spring'
 
 
-interface IProjectsArr {
-    projects: Iprojects[]
-}
+
 
 const Projects = ({ projects }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
-    console.log(projects)
+
     const isLoggedIn = useAuth()
     const parsed: Iprojects[] = JSON.parse(projects)
     const [loading, setLoading] = useState(true)
-   let displayProjects = parsed.map((project) => {
 
-        console.log("HÄR")
-        console.log(Array.isArray(project))
-        console.log(project)
-        return (
-            <Project key={project._id} focus={false} project={project} />
-
-
-        )
-    }) 
     useEffect(() => {
         if (parsed.length > 0) {
             setLoading(false)

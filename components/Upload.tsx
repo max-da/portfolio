@@ -1,14 +1,9 @@
-import type { NextPage } from 'next'
-
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import axios, { AxiosError } from "axios";
 import { IDisplayObject, IFormProject, IFormExp, Imodal } from '../utils/interfaces';
 import { useRouter } from 'next/router';
 import { BaseModal } from ".././components/modals/BaseModal";
-import { Overlay } from './Overlay';
-import useOverlay from '../utils/overlayContext';
-import useAuth from '../utils/useAuth';
-import Link from 'next/link';
+
 
 
 let options = {
@@ -24,25 +19,25 @@ interface Iprops {
 
 
 }
+let initial: IFormExp | IFormProject = {
+    name: "",
+    techStack: "",
+    description: "",
+    createDate: new Date,
+    gitLink: "",
+    liveLink: ""
+}
 
+/* Hanterar uppladdning för både exp & projekt. Detta görs genom att loopa ut objektattributen som den tar emot genom props */
+/* Beroende av url väljs vart post req ska skickas, form utformas beroende om det finns filer eller inte */
 export const Upload = (props: Iprops) => {
-    const isLoggedIn = useAuth()
     const projectInfo = props.items;
     const router = useRouter()
     const [files, setFiles] = useState<FileList | null>()
     const [showModal, setShowModal] = useState<boolean>(false)
-    const { toggle, setToggle } = useOverlay()
-
     const [modal, setModal] = useState<Imodal>({ cancel: () => { setShowModal(false) }, message: "", title: "" })
     const [postPath, setPostPath] = useState("")
-    let initial: IFormExp | IFormProject = {
-        name: "",
-        techStack: "",
-        description: "",
-        createDate: new Date,
-        gitLink: "",
-        liveLink: ""
-    }
+    const [form, setForm] = useState<IFormExp | IFormProject>(initial)
 
     if (!props.files) {
         options = {
@@ -61,9 +56,8 @@ export const Upload = (props: Iprops) => {
     }
 
 
-    const [form, setForm] = useState<IFormExp | IFormProject>(initial)
+   
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log(form)
         if (e.currentTarget.files) {
             setFiles(e.currentTarget.files)
         }
@@ -89,15 +83,12 @@ export const Upload = (props: Iprops) => {
     }, [])
 
     const handleSubmit = async () => {
-
-        console.log(files)
-        console.log(form)
         let postForm: IFormExp | IFormProject | FormData = form
         let formData = new FormData()
-        console.log(formData.getAll)
+
         for (const [key, value] of Object.entries(form)) {
             formData.append(key, value)
-            console.log(value)
+
         }
         if (files) {
          
@@ -108,10 +99,8 @@ export const Upload = (props: Iprops) => {
             }
 
             if (FileList.length < 1) {
-                console.log("NLADHSLNJ")
 
                 setModal(modal => ({ ...modal, title: "Error", message: "Du måste lägga till minst en bild" }))
-                setToggle()
                 setShowModal(true)
 
 
@@ -123,21 +112,11 @@ export const Upload = (props: Iprops) => {
         )
 
             .then((res) => {
-
-                console.log("HEALAALALALL")
-                console.log(res.data)
-                console.log("SUCCöpgaidnandglkököghdaladgadä'agdhagdpagdjgadogdjahbgdalkagdhgadgadbjakgdjkgdab")
-                setToggle()
-             
-                return setModal(modal => ({ ...modal, title: "Succé!", message: "Uppladdnig lyckades." }))
+                return setModal(modal => ({ ...modal, title: "Succé!", message: "Uppladdning lyckades." }))
 
             })
             .catch((err: AxiosError) => {
-                console.log("EROROEOEROEAROEJREIROEOREORO")
-                console.log(err)
-                console.log(err.message)
-                setToggle()
-             
+
                 return setModal(modal => ({ ...modal, title: "Någonting gick fel", message: "Vänligen fyll i rödmarkerade fält" }))
             })
 
@@ -149,6 +128,7 @@ export const Upload = (props: Iprops) => {
             setShowModal(true)
         }
     },[modal])
+
     return (
         <>
        
