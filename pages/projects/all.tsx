@@ -15,7 +15,6 @@ import { json } from 'node:stream/consumers'
 import { InferGetServerSidePropsType, GetStaticProps } from 'next'
 import { animated, useTrail } from 'react-spring'
 
-
 interface IProjectsArr {
     projects: Iprojects[]
 }

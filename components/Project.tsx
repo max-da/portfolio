@@ -197,7 +197,6 @@ export const Project = (props: Iprops) => {
 
 
 
-
                 </>
             ) : (
                 <>
